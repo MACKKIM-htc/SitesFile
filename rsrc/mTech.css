@@ -19,10 +19,10 @@
 			em { font-style: italic;}
 			h1 { font: 700 48px/1.2 "Poppins", sans-serif;}
 			h2 { font: 700 24px/1.2 "Poppins", sans-serif;}
-			h3 { font: 700 14px/1.2 "Poppins", sans-serif;}
+			h3 { font: 700 14px/1.2 "Poppins", sans-serif; margin-top: 0px; margin-bottom: 5px;}
 			h4 { font: 700 13px/1.2 "Poppins", sans-serif;}
-			h5 { font: 700 min(12px, 1.8vw)/1.2 "Poppins", sans-serif;}
-			h1, h2, h3, h4, h5 {margin-bottom: 5px}
+			h5 { font: 700 min(12px, 1.8vw)/1.2 "Poppins", sans-serif; margin-top: 0px; margin-bottom: 0px;}
+			h1, h2, h4 {margin-bottom: 5px}
 			h6 { font: 700 18px/1.2 "Poppins", sans-serif;}
 
 
@@ -52,7 +52,7 @@
 			.buttons > * { flex: 1 1 calc(50% - 20px); margin-top: 20px;}
 			.buttons > *:nth-child(odd) { margin-right: 20px;}
 
-			a.button { outline: none; width: 100%; text-align: center; display: inline-block; border: none;transition: 0.2s ease;
+			a.button { outline: none; width: 100%; height: 100%; text-align: center; display: inline-block; border: none;transition: 0.2s ease;
 				font: 500 max(1vw, 10px)/1 "Poppins", sans-serif; padding: 8px 10px; cursor: pointer; border-radius: var(--borderRadius);
 				background: var(--primaryColor); color: var(--backgroundColor); position: relative; top: 0;}
 			a.button:hover, a.button.hover {top: -3px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);}
@@ -159,8 +159,9 @@
 			.results-section { display: grid;}
 			.results--grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));}
 			.results-section.results--grid {grid-gap: 20px;}
-			.results--list {grid-template-columns: 100%; grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));}
+			.results--list {grid-template-columns: 100%; grid-template-rows: repeat(auto-fill, minmax(55px, 1fr));}
 			.results-section.results--list {grid-gap: 5px;}
+			.results-section.results--list p {line-height: 1;}
 
 			.profile { position: relative; background: var(--backgroundColor); color: var(--foregroundColor);
 				box-shadow: 0 3px 15px rgba(51, 51, 51, 0.2); border-radius: 10px; overflow: hidden;
@@ -169,10 +170,9 @@
 				pointer-events: none;}
 			.pImage { grid-column: span 2;}
 			.pInfo { padding: 5px 5px 0;grid-column: span 2;}
-			.pInfo p { font-size: 12px; font-weight: 400;}
-			.pInfo marquee{ font-size: 12px; font-weight: 400;}
-			.pStats { padding: 5px 25px;}
-			.pStats p { color: var(--grayColor); text-transform: uppercase; font-size: min(10px, 1.8vw);}
+			.pInfo p { font-size: 12px; font-weight: 400; margin: 0px;}
+			.pStats { padding: 0px 25px;}
+			.pStats p { color: var(--grayColor); text-transform: uppercase; font-size: min(10px, 1.8vw); margin: 0px;}
 			.pLink { padding: 5px 10px;grid-column: span 2;}
 			.profile a:hover { top: 0; box-shadow: none; background: var(--primaryShade4);}
 			.profile a:active, .profile a:focus { top: 0; box-shadow: none; background: var(--primaryShade5);}
@@ -218,7 +218,7 @@
 			@media (min-width: 500px) {
 				input.variation + label { margin: 10px 2vw;  }
 				.results-section.results--grid .profile { width: 100%; margin: auto; overflow: hidden;
-					grid: 150px 60px 30px 40px/repeat(2, minmax(80px, 1fr)); grid-gap: 5px;}
+					grid: 150px 75px 30px 40px/repeat(2, minmax(80px, 1fr)); grid-gap: 1px;}
 				.results-section.results--grid .pImage { grid-column: span 2;}
 				.results-section.results--grid .pInfo { grid-column: span 2;}
 				.results-section.results--grid .pStats { padding: 0px 25px;}
@@ -226,7 +226,7 @@
 			}
 			@media (min-width: 768px) {
 				.results-section.results--list .profile { grid-template-columns: 15% 50% 10% 10% 15%;
-					grid-template-rows: 50px; width: 100%; height: 50px; padding-right: 20px;}
+					grid-template-rows: 55px; width: 100%; height: 55px; padding-right: 10px;}
 				.results-section.results--list {grid-gap: 5px;}
 				.results-section.results--list .pImage {grid-column: 1;margin-right: 20px;}
 				.results-section.results--list .pImage img {border-radius: 10px 0 0 10px; border: none; object-fit: fill;}
@@ -234,17 +234,17 @@
 				.results-section.results--list .pStats { min-width: 100px; padding: 5px 0;}
 				.results-section.results--list .pStats:nth-child(3) { grid-column: 3;}
 				.results-section.results--list .pStats:nth-child(4) { grid-column: 4;}
-				.results-section.results--list .pLink {grid-column: 5; padding: 5px 0 0; margin: 5px 0px;}
+				.results-section.results--list .pLink {grid-column: 5; padding: 5px; margin: 5px 0px; align-items: center;}
 			}
 			/* @media (max-width: 768px) { .results-header__option { display: none;}} */
 
 			@media (max-width: 768px) {
 				.results-section.results--list .profile { grid-template-columns: 75% 25%;
-					grid-template-rows: 50px; width: 100%; height: 50px; padding-right: 10px;}
+					grid-template-rows: 55px; width: 100%; height: 55px; padding-right: 5px;}
 				.results-section.results--list .pImage { display: none;}
 				.results-section.results--list .pStats { display: none;}
 				.results-section.results--list .pInfo {grid-column: 1;padding: 5px;}
-				.results-section.results--list .pLink {grid-column: 2; padding: 5px 0 0; margin: 5px 0px;}
+				.results-section.results--list .pLink {grid-column: 2; padding: 5px ; margin: 5px 0px; justify-items: center;}
 			}
 			@media (min-width: 992px) {
 				main { display: grid; grid: min-content auto/minmax(250px, 18%) 1fr; grid-gap: 40px;}
@@ -252,3 +252,4 @@
 				.filter-section { position: sticky; top: 30px;}
 				.results-section { margin-left: 2em;}
 			}
+			.inti {}
