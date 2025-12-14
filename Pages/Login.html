@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>MA Cipta Kridatama - KIM Login Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
+@charset 'UTF-8';
+@font-face { font-family: 'typicons'; font-weight: normal; font-style: normal;
+	src: url('https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.eot');
+	src: url('https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.eot?#iefix') format('embedded-opentype'),
+	url('https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.woff') format('woff'),
+	url('https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.ttf') format('truetype'),
+	url('https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.svg#typicons') format('svg')
+}
+
+body, html { font-family: 'Source Sans Pro', sans-serif; background-color: #1d243d; padding: 0; margin: 0;}
+
+.container{ margin: 0; top: 50px; left: 50%; position: absolute; width: 400px; height: 500px; transform: translateX(-50%);
+  text-align: center; background-color: rgb( 33, 41, 66 ); border-radius: 9px; border-top: 10px solid #79a6fe; border-bottom: 10px solid #8BD17C; box-shadow: 1px 1px 108.8px 19.2px rgb(25,31,53);}
+
+.box h4 { margin-top:30px; font-family: 'Source Sans Pro', sans-serif; color: #5c6bc0; font-size: 18px;}
+.box h4 span { color: #dfdeee; font-weight: lighter;}
+.box h5 { margin-top: -15px; margin-bottom: 70px; font-family: 'Source Sans Pro', sans-serif; font-size: 13px; color: #a1a4ad; letter-spacing: 1.5px;}
+
+.box input[type = "text"],.box input[type = "password"], .box input[type = "email"], .box input[type = "number"] { display: block; margin: 20px auto; padding: 14px 10px; width: 320px;
+  background: #262e49; border: 0; border-radius: 5px; outline: none; color: #d6d6d6; -webkit-transition: all .2s ease-out; -moz-transition: all .2s ease-out; transition: all .2s ease-out;}
+.box input[type = "text"]:focus,.box input[type = "password"]:focus, .box input[type = "email"]:focus, .box input[type = "email"]:focus { border: 1px solid #79A6FE;}
+::-webkit-input-placeholder { color: #9f9f9f;}
+
+a{ color: #5c7fda; text-decoration: none;}
+a:hover { text-decoration: underline;}
+
+label input[type = "checkbox"] { display: none;}
+label span { display: inline-block; position: relative; height: 13px; width: 13px; float: left; left: 7.5%;
+  border: 2px solid #464d64; border-radius: 2px; cursor: pointer;}
+
+.btn1 { width: 340px; height: 49px; position: absolute; left: 8%; top: 79%; transition: 0.3s;
+  color: #dfdeee;  font-size: 16px; background: #7f5feb; border:0; border-radius: 100px; cursor: pointer;}
+.btn1:hover { background: #5d33e6;}
+
+.rmb { position: absolute; margin-left: -24%; margin-top: 0px; color: #dfdeee; font-size: 13px;}
+.forgetpass { position: relative; float: right; right: 28px;}
+
+
+[type=checkbox]:checked + span:before { font-family: FontAwesome; font-size: 16px; content: "✔"; position: absolute; top: -4px; color: #896cec; left: -1px; width: 13px;}
+
+.typcn { position: absolute; left: 339px; top: 218px; color: #3b476b; font-size: 22px; cursor: pointer;}
+.typcn:before { font-family: 'typicons'; font-style: normal; font-weight: normal; speak: none; display: inline-block; text-decoration: inherit; width: 1em; height: 1em; font-size: 1em;
+	text-align: center; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; text-rendering: optimizeLegibility} 
+.typcn.active { color: #fff;}
+.typcn-eye:before {	content: '\e06f'}
+
+.footer { position: relative; left: 0; bottom: 0; top: 605px; width: 100%; color: #78797d; font-size: 14px; text-align: center;}
+
+@-webkit-keyframes bounceInDown {
+	0%, 60%, 75%, 90%, to {-webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);animation-timing-function: cubic-bezier(.215, .61, .355, 1)}
+	0% {-webkit-transform: translate3d(0, -3000px, 0);opacity: 0;transform: translate3d(0, -3000px, 0)	}
+	60% {-webkit-transform: translate3d(0, 25px, 0);opacity: 1;transform: translate3d(0, 25px, 0)}
+	75% {-webkit-transform: translate3d(0, -10px, 0);	transform: translate3d(0, -10px, 0)}
+	90% {-webkit-transform: translate3d(0, 5px, 0);transform: translate3d(0, 5px, 0)}
+	to {-webkit-transform: translateZ(0);transform: translateZ(0)}
+}
+
+@keyframes bounceInDown {
+	0%, 60%, 75%, 90%, to {-webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);animation-timing-function: cubic-bezier(.215, .61, .355, 1)}
+	0% {-webkit-transform: translate3d(0, -3000px, 0);opacity: 0;transform: translate3d(0, -3000px, 0)	}
+	60% {-webkit-transform: translate3d(0, 25px, 0);	opacity: 1;transform: translate3d(0, 25px, 0)}
+	75% {-webkit-transform: translate3d(0, -10px, 0);	transform: translate3d(0, -10px, 0)}
+	90% {-webkit-transform: translate3d(0, 5px, 0);transform: translate3d(0, 5px, 0)}
+	to {-webkit-transform: translateZ(0);transform: translateZ(0)}
+}
+
+.bounceInDown {-webkit-animation-name: bounceInDown;	animation-name: bounceInDown}
+.animated {-webkit-animation-duration: 1s;-webkit-animation-fill-mode: both;animation-duration: 1s;animation-fill-mode: both}
+@media (prefers-reduced-motion) {
+	.animated {-webkit-animation: unset !important;-webkit-transition: none !important;animation: unset !important;transition: none !important	}
+}
+    </style>
+
+  </head>
+    
+  <body>
+<div class="animated bounceInDown">
+  <div class="container">
+    <form name="form1" class="box" onsubmit="LoginUser(this); return false;">
+      <h4>MINING ACADEMY CK KIM &nbsp<span>Portal Pembelajaran</span></h4>
+      <h5>Sign in to your account.</h5>
+        <input type="number" name="user" id="user" placeholder="Salary Number" autocomplete="off" required>
+        <i class="typcn typcn-eye" id="eye"></i>
+        <input type="password" name="password" placeholder="Password" id="password" autocomplete="off" required>
+        <label>
+          <input type="checkbox">
+          <span></span>
+          <small class="rmb">Remember me</small>
+        </label>
+        <a href="#" class="forgetpass">Forget Password?</a>
+        <input type="submit" class="btn1">
+      </form>
+  </div> 
+       <div class="footer">
+      <span>Follow Us on <a href="https://www.youtube.com/@MiningAcademyCK-KIM">Youtube</a></span>
+    </div>
+</div>
+    <script>
+	var pwd = document.getElementById('password');
+	var eye = document.getElementById('eye');
+	eye.addEventListener('click',togglePass);
+
+	function togglePass(){
+		eye.classList.toggle('active');
+		(pwd.type == 'password') ? pwd.type = 'text' : pwd.type = 'password';
+	}
+
+/**
+ * Fungsi ini menangani pengiriman formulir login dari halaman eksternal.
+ * @param {HTMLFormElement} form - Elemen formulir yang dikirim.
+ */
+function LoginUser(form) {
+    // URL Web App Google Apps Script Anda
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby3zfQh5kcW_xXdKB6nUl9ScrF7-PmzIhqKQxa3QmtCHCX7jcObATA_jBQchFMD6vmkAA/exec'; 
+
+    const formData = new FormData(form);
+    const dataObject = Object.fromEntries(formData.entries());
+
+    // Data yang akan dikirim (JSON)
+    const payload = {
+        action: 'checkLogin', // Sebuah penanda untuk Web App
+        user: dataObject.user,
+        password: dataObject.password
+    };
+
+    // Kirim permintaan ke Web App menggunakan fetch API
+    fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            // Melemparkan error jika status HTTP bukan 2xx
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json(); // Mengasumsikan Web App merespons dengan JSON
+    })
+    .then(onSuccess)
+    .catch(onFailure);
+}
+
+/**
+ * Dipanggil ketika Web App merespons dengan sukses (status HTTP 200).
+ * @param {object} responseData - Data JSON yang dikembalikan dari Web App.
+ */
+function onSuccess(responseData) {
+    // Web App Anda harus mengembalikan objek dengan properti 'status' dan 'data'
+    // Contoh: {status: 'success', data: storeData} atau {status: 'error', message: '...' }
+
+    if (responseData && responseData.status === 'success') {
+        const storeData = responseData.data;
+
+        if (storeData == null || storeData === 'null') {
+            alert("Username tidak diketemukan atau Password tidak sesuai. Hubungi administrator (081348637946)");
+            return;
+        }
+
+        try {
+            const ddata = JSON.parse(storeData);
+            const redirectUrl = ddata[0][5];
+
+            if (redirectUrl && typeof redirectUrl === 'string' && redirectUrl.startsWith('http')) {
+                const checkbox = document.getElementById('simpan');
+                if (checkbox && checkbox.checked) {
+                    localStorage.setItem('anggota', storeData);
+                    localStorage.setItem('tanggal', new Date().toString()); // Menggunakan Date().toString() lebih aman
+                }
+                
+                // Gunakan window.location.href karena ini sudah di halaman top level
+                window.location.href = redirectUrl; 
+            } else {
+                alert("Login berhasil, tetapi URL tidak ditemukan / valid. Hubungi Administrator (081348637946)");
+            }
+        } catch (e) {
+             console.error("Kesalahan parsing JSON atau pemrosesan data:", e);
+             alert("Terjadi kesalahan data saat login. Hubungi Administrator.");
+        }
+        
+    } else if (responseData && responseData.status === 'error') {
+        alert("Login Gagal: " + responseData.message);
+    } else {
+        alert("Kesalahan tak terduga dari server. Hubungi Administrator.");
+    }
+}
+
+/**
+ * Dipanggil jika terjadi kesalahan jaringan atau fetch gagal (misalnya, Web App URL salah, timeout, dll.).
+ * @param {Error} error - Objek error yang dilemparkan.
+ */
+function onFailure(error) {
+    console.error("Kesalahan Fetch/Server:", error);
+    alert("Terjadi Kesalahan Server atau Jaringan: " + error.message);
+}
+    </script>
+  </body>
+  
+</html>
