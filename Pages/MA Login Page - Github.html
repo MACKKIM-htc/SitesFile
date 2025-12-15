@@ -38,6 +38,7 @@
 			const dd = event.data;
 			const hitung = dd.length;
 			const dataUser = JSON.parse(event.data);
+			alert(hitung +'        '+ dataUser[0].length);
 			if (hitung == 32) {
 				if (dataUser[0][31] =='Y') {
 					localStorage.setItem('dataUser', JSON.stringify(dataUser));
