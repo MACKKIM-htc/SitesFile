@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>MA Login Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+	#popup-container { display: none; position: fixed; left: 100px; top: 0; width: 80vw; height: 100vh; z-index: 99; justify-content: center; align-items: center; background-color: rgba(0,0,0,0.7);}
+	.popup-content { background-color: #fefefe; height: 100%; width: 100%; position: relative;}
+    </style>
+  </head>
+  <body style="padding: 0; margin: 0;height: 100vh; overflow: hidden;background-color: #343434;">
+<button onclick="window.open('', '_self', ''); window.close();" style="display: block; width: 50px; height: 50px; z-index: 100;">Close This Window</button>
+	<div id="popup-container">
+		<div class="popup-content">        
+			<iframe src="" width="100%" height="100%" scrolling="no" style="border: none;" id="frame"></iframe>
+		</div>
+	</div>
+	<script>
+		const element = document.getElementById("popup-container");
+		const kerangka = document.getElementById("frame");
+		document.addEventListener('DOMContentLoaded', () => {
+			if (localStorage.getItem('anggota') !== null && localStorage.getItem('tanggal') !== null) {
+				const savedData = JSON.parse(localStorage.getItem('anggota'));
+				const savedDate = localStorage.getItem('tanggal');
+				const umur = Math.abs(new Date() - new Date(savedDate)) / 3600000;
+				alert(savedData[0][5]);
+				if (umur <24) {
+					document.getElementById('frame').src = '';
+					element.style.display = "none";
+					window.open(savedData[0][5], '_blank');
+					window.close();
+				} else {
+					alert("Sesi Telah Berakhir. Silahkan Login Ulang");
+					element.style.display = "flex";
+					kerangka.src = 'https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec';
+				}
+			} else {
+				element.style.display = "flex";
+				kerangka.src = 'https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec';
+			}
+		});
+		window.addEventListener('message', function(event) {
+			if (event.origin !== 'https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec') {
+				return;
+			}
+			let urlData = event.data;
+			console.log('Received from iFrame:', urlData);
+			window.top.location.href = urlData;
+			window.close();
+		});
+
+	</script>
+
+  </body>
+  
+</html>
