@@ -35,6 +35,7 @@
 			}
 		});
 		window.addEventListener('message', function(event) {
+			alert(event.data);
 			const dataUser = JSON.parse(event.data);
 			if (dataUser.length == 32) {
 				if (dataUser[0][31] =='Y') {
