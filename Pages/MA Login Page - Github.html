@@ -20,6 +20,7 @@
 		const element = document.getElementById("popup-container");
 		const kerangka = document.getElementById("frame");
 		document.addEventListener('DOMContentLoaded', () => {
+			alert(localStorage.getItem('anggota');
 			if (localStorage.getItem('anggota') !== null && localStorage.getItem('tanggal') !== null) {
 				const savedData = JSON.parse(localStorage.getItem('anggota'));
 				const savedDate = localStorage.getItem('tanggal');
