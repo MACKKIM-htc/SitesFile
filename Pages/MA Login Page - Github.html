@@ -23,9 +23,8 @@
 				const dataUser = JSON.parse(localStorage.getItem('dataUser'));
 				const savedDate = dataUser[0][30];
 				const umur = Math.abs(new Date() - new Date(savedDate)) / 3600000;
-				alert(umur);
 				if (umur <24) {
-					window.open(dataUser[0][5], '_blank');
+					window.top.location.href = dataUser[0][5];
 					window.close();
 				} else {
 					alert("Sesi Telah Berakhir. Silahkan Login Ulang");
