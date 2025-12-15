@@ -13,12 +13,11 @@
   <body style="padding: 0; margin: 0;height: 100vh; overflow: hidden;background-color: #343434;">
 	<div id="popup-container">
 		<div class="popup-content">        
-			<iframe src="" width="100%" height="100%" scrolling="no" style="border: none;" id="frame"></iframe>
+			<iframe src="https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec" width="100%" height="100%" scrolling="no" style="border: none;" id="frame"></iframe>
 		</div>
 	</div>
 	<script>
 		const element = document.getElementById("popup-container");
-		const kerangka = document.getElementById("frame");
 		document.addEventListener('DOMContentLoaded', () => {
 			alert(localStorage.getItem('tanggal'));
 			if (localStorage.getItem('anggota') !== null && localStorage.getItem('tanggal') !== null) {
@@ -32,11 +31,9 @@
 				} else {
 					alert("Sesi Telah Berakhir. Silahkan Login Ulang");
 					element.style.display = "flex";
-					kerangka.src = 'https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec';
 				}
 			} else {
 				element.style.display = "flex";
-				kerangka.src = 'https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec';
 			}
 		});
 		window.addEventListener('message', function(event) {
