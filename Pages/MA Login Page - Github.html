@@ -41,7 +41,7 @@
 			}
 		});
 		window.addEventListener('message', function(event) {
-			if (event.startsWith('http')) {
+			if (event.data.startsWith('http')) {
 				let urlData = event.data;
 				console.log('Received from iFrame:', urlData);
 				window.top.location.href = urlData;
