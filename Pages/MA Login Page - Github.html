@@ -35,13 +35,14 @@
 			}
 		});
 		window.addEventListener('message', function(event) {
+			const dd = event.data;
+			const hitung = dd.length;
 			const dataUser = JSON.parse(event.data);
-			alert(dataUser +'   '+ dataUser.length +'     '+ dataUser[0][29]);
-			if (dataUser.length == 32) {
+			if (hitung == 32) {
 				if (dataUser[0][31] =='Y') {
 					localStorage.setItem('dataUser', JSON.stringify(dataUser));
 				}
-				window.top.location.href = dataUser[0][29];
+				window.top.location.href = dataUser[0][5];
 				window.close();
 			}
 		});
