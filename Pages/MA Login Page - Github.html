@@ -27,8 +27,6 @@
 				const umur = Math.abs(new Date() - new Date(savedDate)) / 3600000;
 				alert(savedData[0][5]);
 				if (umur <24) {
-					document.getElementById('frame').src = '';
-					element.style.display = "none";
 					window.open(savedData[0][5], '_blank');
 					window.close();
 				} else {
