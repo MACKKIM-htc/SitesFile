@@ -6,12 +6,11 @@
     <title>MA Login Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-	#popup-container { display: none; position: fixed; left: 100px; top: 0; width: 80vw; height: 100vh; z-index: 99; justify-content: center; align-items: center; background-color: rgba(0,0,0,0.7);}
+	#popup-container { display: none; position: fixed; left: 100px; top: 0; width: 100vw; height: 100vh; z-index: 99; justify-content: center; align-items: center; background-color: rgba(0,0,0,0.7);}
 	.popup-content { background-color: #fefefe; height: 100%; width: 100%; position: relative;}
     </style>
   </head>
   <body style="padding: 0; margin: 0;height: 100vh; overflow: hidden;background-color: #343434;">
-<button onclick="window.open('', '_self', ''); window.close();" style="display: block; width: 50px; height: 50px; z-index: 100;">Close This Window</button>
 	<div id="popup-container">
 		<div class="popup-content">        
 			<iframe src="" width="100%" height="100%" scrolling="no" style="border: none;" id="frame"></iframe>
