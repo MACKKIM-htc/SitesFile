@@ -41,13 +41,12 @@
 			}
 		});
 		window.addEventListener('message', function(event) {
-			if (event.origin !== 'https://script.google.com/macros/s/AKfycbypcX2SR3pMDtwrSsqB8hjpi8LecYqvpXFfd5Xeuc0GNUT6nPx9erVO25Dw_qrhwVTV/exec') {
-				return;
+			if (event.startsWith('http')) {
+				let urlData = event.data;
+				console.log('Received from iFrame:', urlData);
+				window.top.location.href = urlData;
+				window.close();
 			}
-			let urlData = event.data;
-			console.log('Received from iFrame:', urlData);
-			window.top.location.href = urlData;
-			window.close();
 		});
 
 	</script>
