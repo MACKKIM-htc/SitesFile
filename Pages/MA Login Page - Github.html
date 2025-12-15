@@ -37,7 +37,7 @@
 		window.addEventListener('message', function(event) {
 			const dataUser = JSON.parse(event.data);
 			if (dataUser.length == 32) {
-				if (dataUser[0][31] =='Y") {
+				if (dataUser[0][31] =='Y') {
 					localStorage.setItem('dataUser', JSON.stringify(ddata2));
 				}
 				window.top.location.href = dataUser[0][29];
