@@ -19,6 +19,7 @@
 	<script>
 		const element = document.getElementById("popup-container");
 		document.addEventListener('DOMContentLoaded', () => {
+			alert(localStorage.getItem('dataUser'));
 			if (localStorage.getItem('dataUser') !== null) {
 				const dataUser = JSON.parse(localStorage.getItem('dataUser'));
 				const savedDate = dataUser[0][30];
