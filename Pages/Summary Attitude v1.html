@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary Attitude Evaluation</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap'>
+    <link rel="stylesheet" href="../style/quiz-style.css">
+    <link rel="stylesheet" href="../style/button-style.css">
+    <style>
+	#SN2 { background-color: #000; color: #fff; text-align: center; padding-left: 0; padding-right: 0;}
+    </style>
+    <script>
+	function populateSinglelevel(element1, array1) {
+		array1.forEach(nArray => {
+			const option = document.createElement("option");
+			option.value = nArray;
+			option.textContent = nArray;
+			document.querySelector(element1).appendChild(option);
+		});
+	}
+	function populateMultilevel(element1, element2, array1) {
+		let el1 = document.querySelector(element1);
+		let el2 = document.querySelector(element2);
+		let indeX = null;
+		indeX = el1.selectedIndex;
+		el2.innerHTML = "<option value=''>--Pilih--</option>";
+		if (indeX != null || indeX != 0) {
+			el2.disabled = false;
+			const indx = array1[indeX - 1];
+			indx.forEach(O1 => {
+				const option = document.createElement("option");
+				option.value = O1;
+				option.textContent = O1;
+				el2.appendChild(option);
+			 });
+		} else {
+			el2.disabled = true;
+    		}
+	}
+	function populateKaryawan() {
+		const selectedOption = document.querySelector('#NamaPenyelia').value;
+		document.querySelector('#Karyawan').innerHTML = '<option value="">--Pilih Nama Karyawan--</option>';
+		document.querySelector('#SN2').value = null;
+		if (selectedOption !== "") {
+			const options = NKaryawan[selectedOption];
+			const options2 = SNKaryawan[selectedOption];
+			for (let i = 0; i < options.length; i++) {
+				const optionElement = document.createElement("option");
+				optionElement.value = options2[i];
+				optionElement.text = options[i];
+				document.querySelector('#Karyawan').appendChild(optionElement);
+				document.querySelector('#Karyawan').disabled = false;
+			}
+		}
+	}
+	function setDropPoin(element1, array1, array2) {
+		let el = document.querySelectorAll(element1);
+		for (var i = 0; i < el.length; i++) {
+			for (var j = 0; j < 11; j++) {
+				const option = document.createElement("option");
+				option.value = array1[j];
+				option.textContent = array2[j];
+				el[i].appendChild(option);
+			}
+		}
+	}
+	function setTargetValBySelection2(sumber1, target) {
+		document.querySelector(target).value = document.querySelector(sumber1).value;
+		localStorage.setItem(document.querySelector(target).id, document.querySelector(sumber1).value);
+		
+	}
+	function saveDropdownIndex(sumber1) {
+		elemen = document.querySelector(sumber1);
+		value = elemen.selectedIndex -1;
+		localStorage.setItem(elemen.id +'Index', value);
+	}
+    </script>
+
+  </head>
+    
+  <body>
+  <div class="container">
+        <div class="form-card">
+            <div class="decorative-element"></div>
+            <div class="form-content">
+                <div class="form-header">
+                    <h1 class="form-title">Summary Attitude Evaluation</h1>
+                    <p class="form-subtitle">Mining Academy - Cipta Kridatama site KIM</p>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <span class="progress-step active" data-step="1" data-number="1">Data Diri</span>
+                        <span class="progress-step" data-step="2" data-number="2">Penilaian</span>
+                        <span class="progress-step" data-step="3" data-number="3">Catatan</span>
+                    </div>
+                </div>
+
+                <div class="error-message" id="errorMessage"></div>
+
+                <form id="multiStepForm" action="https://script.google.com/macros/s/AKfycbyvpcrrl2OVIqJM4BtLWYrqvbJeel6DpZMP2MSnlruC3fgFxo6p-yYL6dcCrDsf9KG_/exec" method="POST" onsubmit="event.preventDefault();">
+                    <!-- Step 1 -->
+                    <div class="form-step active" data-step="1">
+                        <div class="form-group">
+		<div class="grid-group2-2 gap28 mb-5">	
+			<div>
+                            		<label for="Date">Tanggal<span class="required">*</span></label>
+                            		<input id="Date" name="Date" type="date" required>
+			</div>
+			<div>
+                            		<label for="Time">Waktu<span class="required">*</span></label>
+                            		<input id="Time"  name="Time" type="time" required>
+			</div>
+		</div>
+                        </div>
+                        <div class="form-group">
+		<div class="grid mb-5 gap-10">
+			<div class="sp1-4-1-13">
+                            		<label for="Department">Department Penilai:<span class="required">*</span></label>
+				<select id="Department" name="Department" onchange="populateMultilevel('#Department', '#NamaPenyelia', Penyelia); saveDropdownIndex('#Department')" required>
+					<option value="">--Pilih Department--</option>
+				</select>
+			</div>
+			<div class="sp4-10-1-10">
+                            		<label for="NamaPenyelia">Nama Penilai <span class="required">*</span></label>
+                            		<select id="NamaPenyelia" name="NamaPenyelia" onchange="populateKaryawan()" disabled required >
+					<option value="">--Pilih Penyelia--</option>
+				</select>
+			</div>
+			<div class="sp10-13-10-13">
+                            		<label for="SN">SN Penilai<span class="required">*</span></label>
+                            		<input type="number" id="SN" name="SN" required>
+			</div>
+		</div>
+                        </div>
+                        <div class="form-group">
+		<div class="grid-group7-3">
+			<div>
+                            		<label for="Karyawan">Nama Karyawan<span class="required">*</span></label>
+                            		<select id="Karyawan" name="Karyawan" onchange="setTargetValBySelection2('#Karyawan', '#SN2')" disabled required >
+					<option value="">--Pilih Penyelia--</option>
+				</select>
+			</div>
+			<div>
+                            		<label for="SN2">SN (Otomatis)<span class="required">*</span></label>
+                            		<input type="number" id="SN2" name="SN2" disabled required>
+			</div>
+		</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="form-step" data-step="2">
+		<div class="form-group" id="keselamatan">			
+			<h3>KESELAMATAN KERJA</h3>		
+			<div class="grid-group8-2">		
+				<label for="safety1">Kedisiplinan Penggunaan APD</label>	
+                            		<select id="safety1" name="safety1" class="nilai" required ></select>
+				<label for="safety2">Selalu Berpikir dan Bertindak Mengacu pada Safety</label>	
+                            		<select id="safety2" name="safety2" class="nilai" required ></select>
+				<label for="safety3">Pemahaman dan Implementasi Golden Rules</label>	
+                            		<select id="safety3" name="safety3" class="nilai" required ></select>
+				<label for="safety4">Pemahaman dan Implementasi Prosedur Keselamatan Kerja</label>	
+                            		<select id="safety4" name="safety4" class="nilai" required ></select>
+				<label for="safety5">Kedisiplinan Mengikuti Safety Meeting (P5M & Safety Talk)</label>	
+                            		<select id="safety5" name="safety5" class="nilai" required ></select>
+				<label for="safety6">Kedisiplinan Form Kesiapan Bekerja</label>	
+                            		<select id="safety6" name="safety6" class="nilai" required ></select>
+				<label for="safety7">Kedisiplinan Pemenuhan Safety Accountability</label>	
+                            		<select id="safety7" name="safety7" class="nilai" required ></select>
+			</div>
+			<textarea id="safety" name="safety" class="sp10" placeholder="Berikan Rekomendasi Untuk Meningkatkan Budaya Keselamatan Kerja Karyawan yang Bersangkutan."></textarea>	
+		</div>
+		<div class="form-group">			
+			<h3>DISIPLIN KERJA</h3>		
+			<div class="grid-group8-2">		
+				<label for="disiplin1">Absensi Harian</label>	
+                            		<select id="disiplin1" name="disiplin1" class="nilai" required ></select>
+				<label for="disiplin2">Ketepatan Jam Masuk dan Pulang</label>	
+                            		<select id="disiplin2" name="disiplin2" class="nilai" required ></select>
+				<label for="disiplin3">Ketepatan Waktu Field Break</label>	
+                            		<select id="disiplin3" name="disiplin3" class="nilai" required ></select>
+				<label for="disiplin4">Ketepatan Jam Memulai Pekerjaan</label>	
+                            		<select id="disiplin4" name="disiplin4" class="nilai" required ></select>
+				<label for="disiplin5">Ketepatan Jam Istirahat</label>	
+                            		<select id="disiplin5" name="disiplin5" class="nilai" required ></select>
+				<label for="disiplin6">Ketepatan Jam Mengakhiri Pekerjaan</label>	
+                            		<select id="disiplin6" name="disiplin6" class="nilai" required ></select>
+				<label for="disiplin7">Tingkat Efektivitas Penggunaan Jam Kerja</label>	
+                            		<select id="disiplin7" name="disiplin7" class="nilai" required ></select>
+			</div>
+			<textarea id="disiplin" name="disiplin" class="sp10" placeholder="Berikan Rekomendasi Untuk Meningkatkan Kedisiplinan Kerja Karyawan yang Bersangkutan."></textarea>	
+		</div>
+		<div class="form-group">			
+			<h3>MOTIVASI KERJA</h3>		
+			<div class="grid-group8-2">		
+				<label for="motivasi1">Proaktivitas dalam Pekerjaan dan Lingkungan Kerja</label>	
+                            		<select id="motivasi1" name="motivasi1" class="nilai" required ></select>
+				<label for="motivasi2">Implementasi Prinsip Kemandirian dalam Bekerja</label>	
+                            		<select id="motivasi2" name="motivasi2" class="nilai" required ></select>
+				<label for="motivasi3">Mencari Peluang untuk Peningkatan Kinerja dan Penyelesaian Masalah</label>	
+                            		<select id="motivasi3" name="motivasi3" class="nilai" required ></select>
+				<label for="motivasi4">Penerapan Inovasi Nyata dalam Pekerjaan</label>	
+                            		<select id="motivasi4" name="motivasi4" class="nilai" required ></select>
+				<label for="motivasi5">Kesesuaian Antara Perintah dan Pelaksanaan</label>	
+                            		<select id="motivasi5" name="motivasi5" class="nilai" required ></select>
+				<label for="motivasi6">Ketepatan Waktu Penyelesaian Tugas</label>	
+                            		<select id="motivasi6" name="motivasi6" class="nilai" required ></select>
+				<label for="motivasi7">Penerapan Prosedur Kerja Sesuai Alurnya</label>	
+                            		<select id="motivasi7" name="motivasi7" class="nilai" required ></select>
+				<label for="motivasi8">Penggunaan Panduan dan Literatur saat Bekerja</label>	
+                            		<select id="motivasi8" name="motivasi8" class="nilai" required ></select>
+				<label for="motivasi9">Kedisiplinan Pengisian dan Pengumpulan Dokumen</label>	
+                            		<select id="motivasi9" name="motivasi9" class="nilai" required ></select>
+				<label for="motivasi10">Kedisiplinan Pelaksanaan 5R Sebelum dan Sesudah Pekerjaan</label>	
+                            		<select id="motivasi10" name="motivasi10" class="nilai" required ></select>
+				<label for="motivasi11">Kedisiplinan Pengelolaan Peralatan Kerja</label>	
+                            		<select id="motivasi11" name="motivasi11" class="nilai" required ></select>
+				<label for="motivasi12">Tingkat Kualitas Pekerjaan</label>	
+                            		<select id="motivasi12" name="motivasi12" class="nilai" required ></select>
+			</div>
+			<textarea id="motivasi" name="motivasi" class="sp10" placeholder="Berikan Rekomendasi Untuk Meningkatkan Motivasi Kerja Karyawan yang Bersangkutan."></textarea>	
+		</div>
+		<div class="form-group">			
+			<h3>SIKAP KERJA</h3>		
+			<div class="grid-group8-2">		
+				<label for="sikap1">Kemampuan Mengelola Emosi atas Umpan Balik yang Diperoleh</label>	
+                            		<select id="sikap1" name="sikap1" class="nilai" required ></select>
+				<label for="sikap2">Penerapan Etika di dalam dan di luar Pekerjaan</label>	
+                            		<select id="sikap2" name="sikap2" class="nilai" required ></select>
+				<label for="sikap3">Tingkat Kepedulian terhadap Pekerjaan dan Lingkungan Kerja</label>	
+                            		<select id="sikap3" name="sikap3" class="nilai" required ></select>
+				<label for="sikap4">Tingkat Tanggung Jawab terhadap Pekerjaan</label>	
+                            		<select id="sikap4" name="sikap4" class="nilai" required ></select>
+				<label for="sikap5">Penerapan Prosedur Komunikasi di Area Kerja</label>	
+                            		<select id="sikap5" name="sikap5" class="nilai" required ></select>
+				<label for="sikap6">Tingkat Kerjasama pada Lingkungan Kerja</label>	
+                            		<select id="sikap6" name="sikap6" class="nilai" required ></select>
+				<label for="sikap7">Identifikasi Detail Pekerjaan</label>	
+                            		<select id="sikap7" name="sikap7" class="nilai" required ></select>
+				<label for="sikap8">Tingkat Ketelitian untuk Menghindari Kesalahan</label>	
+                            		<select id="sikap8" name="sikap8" class="nilai" required ></select>
+			</div>
+			<textarea id="sikap" name="sikap" class="sp10" placeholder="Berikan Rekomendasi Untuk Meningkatkan Sikap Kerja Karyawan yang Bersangkutan."></textarea>	
+		</div>
+		<div class="form-group">
+			<h3>JUMLAH SANKSI YANG PERNAH DIBERIKAN</h3>		
+			<div class="grid-group8-2">		
+				<label for="sanksi1">SURAT PERNYATAAN / KONSELING</label>	
+                            		<select id="sanksi1" name="sanksi1" class="nilai2" required></select>
+				<label for="sanksi2">PERINGATAN LISAN</label>	
+                            		<select id="sanksi2" name="sanksi2" class="nilai2" required ></select>
+				<label for="sanksi3">SURAT PERINGATAN 1 / 2 / 3</label>	
+                            		<select id="sanksi3" name="sanksi3" class="nilai2" required ></select>
+			</div>
+		</div>
+	      </div>
+		
+                    <!-- Step 3 -->
+                    <div class="form-step" data-step="3">
+		<div class="form-group">			
+			<h3>KOMENTAR KESELURUHAN DARI ATASAN<span class="required">......*</span></h3>		
+			<textarea id="komentar" name="komentar" class="sp10 h100" placeholder="Komentar Terkait Kinerja dan Kedisiplinan Karyawan secara Keseluruhan" required></textarea>
+		</div>
+		<div class="form-group">
+			<h3>PROGRAM / RENCANA YANG AKAN DATANG UNTUK KARYAWAN<span class="required">......*</span></h3>
+			<label>Pilihlah Beberapa Rencana Atau Program Yang Akan Diberikan Kepada Karyawan Atau Beberkan Rencana Mendatang Pada Kolom Text</label>		
+			<div class="grid-group2-1">		
+				<div class="radio-option">	
+					<input type="checkbox" id="program1" name="program[]" value="Pelatihan Budaya Kerja" required>
+					<label for="program1" class="radio-label">Pelatihan Budaya Kerja</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program2" name="program[]" value="Pelatihan Keselamatan Kerja" required>
+					<label for="program2" class="radio-label">Pelatihan Keselamatan Kerja</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program3" name="program[]" value="Pelatihan Penambahan Kompetensi" required>
+					<label for="program3" class="radio-label">Pelatihan Penambahan Kompetensi</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program4" name="program[]" value="Pelatihan Pengembangan Karakter Diri" required>
+					<label for="program4" class="radio-label">Pelatihan Pengembangan Karakter Diri</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program5" name="program[]" value="Pelatihan Peningkatan Kompetensi" required>
+					<label for="program5" class="radio-label">Pelatihan Peningkatan Kompetensi</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program6" name="program[]" value="Pemberian Sanksi Administratif" required>
+					<label for="program6" class="radio-label">Pemberian Sanksi Administratif</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program7" name="program[]" value="Pembinaan Karyawan (Coachng & Counseling)" required>
+					<label for="program7" class="radio-label">Pembinaan Karyawan (Coachng & Counseling)i</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program8" name="program[]" value="Pembinaan Mental dan Fisik" required>
+					<label for="program8" class="radio-label">Pembinaan Mental dan Fisik</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program9" name="program[]" value="Pembuatan Rencana Pengembangan Karyawan" required>
+					<label for="program9" class="radio-label">Pembuatan Rencana Pengembangan Karyawan</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program10" name="program[]" value="Pendampingan dan Bimbingan Interpersonal (Mentoring)" required>
+					<label for="program10" class="radio-label">Pendampingan dan Bimbingan Interpersonal (Mentoring)</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program11" name="program[]" value="Pengajuan Promosi" required>
+					<label for="program11" class="radio-label">Pengajuan Promosi</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program12" name="program[]" value="Penugasan  Pekerjaan Spesifik" required>
+					<label for="program12" class="radio-label">Penugasan  Pekerjaan Spesifik</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program13" name="program[]" value="Penugasan Ketrampilan Baru" required>
+					<label for="program13" class="radio-label">Penugasan Ketrampilan Baru</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program14" name="program[]" value="Penugasan Lokasi Kerja Baru" required>
+					<label for="program14" class="radio-label">Penugasan Lokasi Kerja Baru</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program15" name="program[]" value="Penugasan Tanggung Jawab Baru" required>
+					<label for="program15" class="radio-label">Penugasan Tanggung Jawab Baru</label>
+				</div>	
+				<div class="radio-option">	
+					<input type="checkbox" id="program16" name="program[]" value="Perubahan Posisi Jabatan" required>
+					<label for="program16" class="radio-label">Perubahan Posisi Jabatan</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program17" name="program[]" value="Sertifikasi Kompetensi" required>
+					<label for="program17" class="radio-label">Sertifikasi Kompetensi</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program18" name="program[]" value="Studi Banding" required>
+					<label for="program18" class="radio-label">Studi Banding</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program19" name="program[]" value="Uji Kompetensi" required>
+					<label for="program19" class="radio-label">Uji Kompetensi</label>
+				</div>
+				<div class="radio-option">	
+					<input type="checkbox" id="program20" name="program[]" value="Workshop & Seminar" required>
+					<label for="program20" class="radio-label">Workshop & Seminar</label>
+				</div>
+			</div>
+			<textarea id="programText" name="program2" class="sp10 h100" placeholder="Rencana / Program Mendatang Untuk Karyawan"></textarea>
+		</div>			
+                    </div>
+
+
+                    <div class="button-group">
+                        <button type="button" class="btn-secondary" id="prevBtn" style="display: none;">Back</button>
+                        <button type="button" class="btn-primary" id="nextBtn">Continue</button>
+                    </div>
+                </form>
+
+                <div class="success-message" id="successMessage">
+		<div class="success-icon"></div>
+		<h3>Thank You!</h3>
+		<p>We've received your information and will be in touch shortly. Contact your Instructor for more information.</p>
+		<div class="frame">
+			<button class="custom-btn btn-5" onclick="window.close()"><span>Close</span></button>
+			<button class="custom-btn btn-6" onclick="window.location.href='https://google.com/'"><span>Go To MA Page</span></button>
+			<button class="custom-btn btn-12" onclick="window.location.href='https://google.com/'"><span>Click!</span><span>Submit Another Response</span></button>
+		</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+let currentStep = 1;
+const totalSteps = 3;
+const formSteps = document.querySelectorAll('.form-step');
+const progressSteps = document.querySelectorAll('.progress-step');
+const progressFill = document.getElementById('progressFill');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const errorMessage = document.getElementById('errorMessage');
+const form = document.getElementById('multiStepForm');
+const successMessage = document.getElementById('successMessage');
+
+const Point1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const Point2 = ['', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const Dept = ["Equipment Maintenance & Supply Chain", "Equipment Health", "Human Capital", "Maintenance Execution", "Maintenance Planning & Scheduling", "Mining Academy", "Mining Operations", "Mining Optimization", "Mining Production", "Mining Services", "OSHE", "Project Cost Control", "Supply Chain Management", "Technical Service & Engineering"];
+
+const Penyelia = [["Irawanto Sudarma"], ["Yudi Ristiawan", "Riswandi", "Danil Firmansyah", "Aditia Fikri Novianur", "Aries Wahyu Sumarto", "Taufik Akbar Rangkoto", "Asgaril Asriel", "Reza Rivaldo Siregar", "Abdullah Zaki", "Ahmad Ferdi Syamza", "Lahzu Yazo Mougisa", "Elibertus Djunaidi"], ["Alfino Ariansyah", "Andrian Renata", "Agus Salim", "Nanda Tridhinata"], ["Ahmad Gufron", "Amir Hasan Pane", "Apdiansyah", "Carles Gultom", "Dedek Suhara", "Dedi Setiawan", "Dwi Ananta Pambudi", "Jefri Afriandi", "Jumono", "Kiki Afriliandi", "Mulyadi", "Nggiring Puthu Mahesa", "Panji Ridwan", "Priyo Satriyo Budiharjo", "Raichan Linggam Triputra", "Redho Kurniawan", "Rizky Aulia Melwanda Putra", "Sarbani", "Suwarno", "Yostardianto", "Yudi Hariyanto", "Zikrillah Imadi Rahman"], ["Aditya Dharma Mulyatno", "Adystia Asyura Putri", "Ahmad Yaji", "Andre Oktavihendri", "Arief Mulya", "Ridik Fa Iskandar", "Rio Pratama Yudha", "Ronald Jenny", "Tarwedi"], ["Asi Nauli Sitorus", "Beny Kusumobroto", "Deavid Pratama Putra", "Decazkia Dwi Fendina", "Eko Cahyono Sri Widodo", "Faisal Ramadhan", "Fransiskus", "Hanis Tri Cahyono", "Heriyus", "Ra Junaedi Mulya", "Saritung Bin Isman", "Syaiful Bahri", "Toga Simanjuntak", "Yudi Sasono"], ["Muariman"], ["Abshor Ardiansyah", "Anhar", "Ezra Karimman Mutu", "Fandro Aneri", "Fefan Junida Sandi", "Gito Heri Saputra Situmorang", "Intan Astina", "Jumadi", "Persada Edith El", "Syaifullah Husein", "Victor Parlindungan Napitupulu"], ["Afdal", "Agusnedi Salwanto", "Amrizon", "Andana", "Anggi Prananta Surbakti", "Ardi Juwanda", "Budi Supriadi S", "Chandra Wijaya", "Daniel Purba", "Darul Syabirin", "Dwi Yogo Nugroho Wicaksono", "Evendra Lestari", "Firdaus", "Fuji Kurniawan", "Hamdi Dafius", "Hary Setiawan", "Hendri Eka Purnama", "Herman", "Herman Pandapotan Silitonga", "Ikhsanul Akmal", "Ilham Akbar", "Ismun", "Jarudin Sibarani", "Josman Sitorus", "Mara Tohong Hasibuan", "Melki Sedek Sitompul", "Muhammad Johan Yusuf", "Muhammad Rafi Hibatullah", "Muhammad Sofwan", "Muhammadinda Debeno Habibie", "Nikson Sibuea", "Nobel Agustoni M", "Ongki Saputra", "Raflis Jamal", "Rahadian Saputra", "Rahmad Fadli", "Ramah Rianto", "Reza David Naufal", "Rian Dovi", "Riri Yanto", "Sahar", "Samson Simanjuntak", "Sudarso Donatus Bakara", "Swinarso", "Takhozu Kakholilla Muji", "Taufik", "Tri Hartono", "Usman", "Vio Yansisco", "Wawan Irawan", "Widi Trihadma Efendi", "Yahudi", "Yohanes Prasetyo", "Zeki Chardinal"], ["Ade Irwan Nurhidayat", "Agung Yulianto", "Agus Wiyoto", "Al Anshar Nurfarid", "Andri", "Arrijal Kurniawan", "Dedi Sudrajat", "Doni Oktoveri", "Juanda", "Muhammad Adhitya Ramadhan", "Riki Wahyudi", "Safrijal", "Sarjianto", "Sujadi", "Tri Handoko", "Wakit Sumanan"], ["Aditya Reino Susanto", "Ahmad Rifqi Fuady", "Alex Leo Bastyan", "Ardi Permono Putro", "Hardiyanto Setiawan", "Jufri", "Kurniady Syafutra", "M. Dahlan Istanto", "Muhammad Arifin", "Muhammad Rusdi", "Thopan Sanggerah", "Tri Wahyuni"], ["Randi Ika Rahman"], ["Agus Firnando", "Asrawan", "Dedy Wahyudi", "Dino Hery Sitanggang", "Dwicky Wicaksana S", "Raymond Tambun", "Septian", "Tezzy Yulivan Mananistrosky", "Tito Murdiansyah"], ["Adi Lovia", "Agus Cahyo Nugroho", "Andi Hakim Harahap", "Ardiansyah", "Arnold Pratama Putra", "Berto Noven Marsekal", "Dedy Ismanto", "Defri Septian Fauzi", "Devi Ulfa Yunita", "Dimas Ihsan Bagaskoro", "Ektorik Dimas", "Elfia Rahmi", "Fajri Ananda", "Hari Rahmad Perdana", "Heri Purnomo", "Marlina Toguma Napitupulu Juniarti", "Moh. Satria Danu Ningrat", "Muhammad Affif Hidayat", "Muhammad Furqan", "Muhammad Noufal Achyar", "Rasul Alam Vandana", "Roy Batara", "Suaiman", "Trio Mei Kristin Zendrato", "Yogi Arfandi"]];
+
+const SNPenyelia = [[8607], [6134, 24537, 26543, 45921, 48229, 48894, 50094, 51793, 52402, 11003354, 11005551, 11008780], [6134, 24537, 26543, 45921], [52106, 41243, 11003326, 50371, 59455, 17561, 11002679, 52279, 17674, 41245, 51555, 11000779, 52381, 49409, 11003813, 11005556, 11003815, 29940, 43055, 38946, 45719, 11003820], [51907, 11000755, 51602, 48897, 11000792, 48893, 63042, 61336, 59700], [11007602, 11008231, 41898, 11002696, 11007860, 11003118, 27640, 21571, 42583, 32085, 40762, 43005, 41433, 11009561], [6983], [51690, 60667, 50366, 51684, 46265, 44619, 49540, 43009, 11000811, 61125, 43182], [60797, 44661, 11005117, 11002352, 51683, 52383, 60731, 11004590, 43860, 11003825, 52414, 11008642, 51733, 11001452, 27668, 11008764, 44835, 28019, 11004193, 11003836, 11005531, 39658, 51765, 51985, 51685, 51741, 61727, 11005539, 43772, 11004039, 51686, 51632, 11000058, 51687, 11008337, 11004051, 39582, 11001601, 11003995, 11008698, 16631, 43504, 47936, 46062, 11004086, 11004087, 18385, 45162, 11001894, 21215, 11003852, 60714, 51689, 62194], [51682, 12812, 51711, 11002198, 44494, 11008755, 63027, 43775, 42998, 11000818, 61126, 42907, 62623, 11495, 45160, 17280], [11001325, 48556, 11001570, 11001736, 11002695, 43745, 11000445, 36886, 11006880, 50541, 50557, 52087], [29678], [11009402, 11009623, 13653, 40336, 11000804, 51692, 43191, 14489, 11001826], [38636, 21276, 28088, 63451, 49337, 11005514, 25227, 51695, 11005506, 11008503, 11004118, 51691, 11005525, 11000760, 34146, 51175, 11009656, 63462, 11008426, 11001028, 11000817, 62166, 49639, 11000821, 63497]];
+
+const SNKaryawan = {'Riswandi': [52106, 11003326, 50371, 59455, 11002679, 52279, 11000779, 49409, 11003813, 11005556, 11003815, 29940, 43055, 38946, 45719, 11003820], 'Danil Firmansyah': [52402, 45921, 11003354, 48229, 50094, 11008780, 11005551, 51793, 48894, 6134], 'Aditia Fikri Novianur': [11002400, 11001727, 52575, 49558], 'Aries Wahyu Sumarto': [46532, 11002075, 11002673, 11002546, 59698], 'Taufik Akbar Rangkoto': [51725, 11008304, 50100, 51801], 'Asgaril Asriel': [11008238, 52281], 'Reza Rivaldo Siregar': [51725, 11008304, 50100, 51801], 'Abdullah Zaki': [48526, 11000498], 'Ahmad Ferdi Syamza': [52557, 60664], 'Lahzu Yazo Mougisa': [], 'Elibertus Djunaidi': [11005551], 'Muhammad Arifin': [11001116, 11005111, 11001118, 11007649], 'Irawanto Sudarma': [41243, 26543, 13653, 41245, 51555, 52381, 51692, 63042, 24537, 14489, 6134], 'Alfino Ariansyah': [42815, 11004097, 63777, 51775, 11001684], 'Andrian Renata': [11004097, 51775, 11001684], 'Agus Salim': [28549, 42815, 11004097, 63777, 51775, 11001684], 'Nanda Tridhinata': [11004097, 51775, 11001684], 'Asi Nauli Sitorus': [], 'Beny Kusumobroto': [11007602, 41898, 11002696, 11007860, 11003118, 27640, 21571, 42583, 32085, 40762, 43005, 41433, 11009561], 'Deavid Pratama Putra': [], 'Decazkia Dwi Fendina': [], 'Eko Cahyono Sri Widodo': [11002696], 'Faisal Ramadhan': [], 'Fransiskus': [], 'Hanis Tri Cahyono': [], 'Heriyus': [41898, 11003118, 27640, 40762, 43005, 41433, 11009561], 'Ra Junaedi Mulya': [], 'Saritung Bin Isman': [], 'Syaiful Bahri': [], 'Toga Simanjuntak': [], 'Yudi Sasono': [], 'Ahmad Gufron': [11001467, 11003117, 11003772, 11007767, 51230, 11005972, 48896, 11001444, 11004988, 61551, 48047, 49779, 41901, 11005491, 11003374, 11003340, 49780, 11004684, 51762], 'Samiaji': [11008607, 11006113, 11005314, 11004047, 11002288, 11002013, 11003013, 11002763, 11005107, 11002578, 11002760, 11002898, 11002576, 11002766, 11008615, 11003609, 11003589, 11008379, 11004124, 11008606, 11000644, 52654, 11001898, 60612, 11008608, 11002759, 11001079, 11000404, 52243, 11002504, 48835, 11008309, 38897, 48520, 11001956, 61158, 60609, 11002976, 11008226, 11002758, 11003590, 11008617, 52652, 52092, 11004046], 'Apdiansyah': [11006113, 52088, 11005314, 11004047, 60645, 11002013, 11004795, 11002763, 11008604, 11004324, 51816, 11005107, 11004534, 11002898, 11002576, 11003119, 11002766, 11003609, 52655, 11008379, 11004124, 11008606, 11000644, 52654, 11001064, 11001898, 48836, 11002759, 11001079, 11000404, 11008616, 52243, 11002761, 11008309, 11001956, 11008609, 60609, 11002577, 11002976, 11008226, 11002758, 11003590, 11008617, 52652, 52092], 'Carles Gultom': [11008607, 11006113, 11005314, 11002977, 11004047, 11002288, 11002767, 11003013, 11002763, 11002578, 11002760, 11002898, 11002576, 11008227, 11004045, 11008615, 11003589, 11008379, 11008606, 11000644, 11001898, 60612, 11008608, 52396, 11002764, 11002759, 11000404, 52243, 11002138, 11002504, 11003309, 48835, 38897, 48520, 61158, 60609, 11004170, 11002976, 11008226, 11002758, 11003590, 11008617, 43873, 52652, 52092], 'Dedek Suhara': [11008607, 11006113, 11005314, 11002977, 11004047, 11002288, 11002013, 11002767, 11003013, 11005107, 11002578, 11002760, 11002898, 11002766, 11008227, 11004045, 11008615, 11003609, 11003589, 11008379, 11004124, 11008606, 52654, 60612, 11008608, 52396, 11002764, 11002759, 11000404, 11002138, 11002504, 11003309, 48835, 11008309, 38897, 48520, 11001956, 61158, 11004170, 11002976, 11008226, 11008617, 43873, 52092, 11004046], 'Dedi Setiawan': [60618, 51999, 52400, 50078, 11003614, 11005593, 49634, 11002575, 11003300, 11001508], 'Dwi Ananta Pambudi': [11008607, 11003699, 52088, 11002977, 60645, 11002614, 11002013, 11004795, 11002767, 11008604, 11004324, 51816, 11001881, 11005107, 11002617, 11004534, 11003119, 11002766, 11008227, 11004045, 11002762, 11003609, 52655, 50969, 11004124, 52654, 11001064, 11008608, 52396, 48836, 52280, 11002764, 11001079, 11008616, 11002138, 11003309, 11002761, 11008309, 52551, 60616, 11001956, 11008609, 11002577, 11004170, 11004046], 'Jefri Afriandi': [11006113, 11005314, 11004047, 11002288, 11002013, 11003013, 11002763, 11008604, 11005107, 11002578, 11002760, 11002898, 11002576, 11002766, 11008615, 11003609, 11003589, 11008379, 11004124, 11008606, 11000644, 52654, 11001898, 11002759, 11001079, 11000404, 52243, 11002504, 48835, 11008309, 38897, 48520, 11001956, 11008609, 61158, 60609, 11002577, 11002976, 11008226, 11002758, 11003590, 11008617, 43873, 52652, 52092], 'Jumono': [60618, 51999, 52400, 50078, 11003614, 11005593, 49634, 11002575, 11003300, 11001508], 'Kiki Afriliandi': [52106, 11003326, 50371, 59455, 11002679, 52279, 11000779, 49409, 11003813, 11005556, 11003815, 29940, 43055, 38946, 45719, 11003820], 'Mulyadi': [41243, 24537, 41245, 52381, 49409, 11004773, 60665, 11000465, 52749, 52751, 52951, 52027, 11007680, 11000500, 51937], 'Nggiring Puthu Mahesa': [11006113, 52088, 11005314, 11004047, 60645, 11002013, 11004795, 11002763, 11008604, 11004324, 51816, 11005107, 11002898, 11002576, 11002766, 11003609, 52655, 11008379, 11004124, 11008606, 11000644, 52654, 11001064, 11001898, 48836, 11002759, 11001079, 11000404, 11008616, 52243, 11002761, 11008309, 11001956, 11008609, 61158, 60609, 11002577, 11002976, 11008226, 11002758, 11003590, 11008617, 52652, 52092, 11004046], 'Panji Ridwan': [52106, 11003326, 50371, 59455, 11002679, 52279, 11000779, 49409, 11003813, 11005556, 11003815, 29940, 43055, 38946, 45719, 11003820], 'Priyo Satriyo Budiharjo': [52106, 11003326, 50371, 59455, 11002679, 52279, 11000779, 49409, 11003813, 11005556, 11003815, 29940, 43055, 38946, 45719, 11003820], 'Raichan Linggam Triputra': [11001467, 11003117, 11003772, 11007767, 51230, 11005972, 48896, 11001444, 11004988, 61551, 48047, 49779, 41901, 11005491, 11003374, 11003340, 49780, 11004684, 51762], 'Redho Kurniawan': [11002898, 11002976, 52092, 11005314, 11004047, 11006113, 11002759, 11008379, 11008226, 60609, 52652, 11001898, 11002576, 11003590, 11002758, 11002763, 52243, 11000644, 11008309, 11001956, 52654, 11004124, 11002013, 11003609, 11004046, 11005107, 11002766, 48520, 11002288, 11002504, 11002578, 11003013, 11003589, 38897, 48835, 11002760, 11008606, 11008609, 11008604, 11008615, 11008617, 60612, 11002577, 43873, 11000404], 'Rizky Aulia Melwanda Putra': [11008607, 11006113, 11003699, 11005314, 11002977, 11004047, 11002614, 11002288, 11002767, 11003013, 11001881, 11002578, 11002617, 11004534, 11002760, 11002898, 11003119, 11008227, 11004045, 11002762, 11008615, 11003589, 50969, 11008379, 60612, 11008608, 52396, 52280, 11002764, 11002759, 11001079, 11008616, 11002138, 11002504, 11003309, 48835, 38897, 52551, 60616, 48520, 11004170, 11002976, 11008226, 43873, 52092], 'Sarbani': [43139, 11001151, 60598, 60621, 11003152, 11002765, 52104, 50810, 48348, 51757, 38944, 43688, 51792, 11008225, 50072, 52021, 52556, 52399, 11002445, 11002757], 'Suwarno': [43139, 11001151, 60598, 60621, 11003152, 11002765, 52104, 50810, 48348, 51757, 38944, 43688, 51792, 11008225, 50072, 52021, 52556, 52399, 11002445, 11002757], 'Yostardianto': [11008607, 11003699, 52088, 11002977, 60645, 11002614, 11002288, 11004795, 11002767, 11003013, 11004324, 51816, 11001881, 11002578, 11002617, 11004534, 11002760, 11003119, 11008227, 11004045, 11002762, 52655, 11003589, 50969, 11001064, 60612, 11008608, 52396, 48836, 52280, 11002764, 11001079, 11008616, 11002138, 11002504, 11003309, 11002761, 48835, 38897, 52551, 60616, 48520, 11002577, 11004170, 11008617], 'Yudi Hariyanto': [43139, 11001151, 60598, 60621, 11003152, 11002765, 52104, 50810, 48348, 51757, 38944, 43688, 51792, 11008225, 50072, 52021, 52556, 52399, 11002445, 11002757], 'Zikrillah Imadi Rahman': [11001467, 11003117, 11003772, 11007767, 51230, 11005972, 48896, 11001444, 11004988, 61551, 48047, 49779, 41901, 11005491, 11003374, 11003340, 49780, 11004684, 51762], 'Muariman': [21276, 60667, 25227, 39582, 16631, 18385, 17280], 'Afdal': [11002280, 11002915, 11003231, 11003734, 11003736], 'Agusnedi Salwanto': [11001556, 11001578, 11001823, 11004200, 11004201, 11004620], 'Amrizon': [59908, 60115, 11001023, 11001149, 11001817, 11001878, 11002914, 11008748], 'Andana': [52398, 52405, 52406, 52449, 52450, 52455, 52650, 52755], 'Anggi Prananta Surbakti': [51737, 51752, 51761, 51796, 51811, 51929, 51930, 51932, 11003992, 11006560, 11007930], 'Ardi Juwanda': [44661, 11002352, 44835, 11005531, 11005539, 43772, 11004051, 11004087], 'Budi Supriadi S': [11001429, 11001548, 11001555], 'Chandra Wijaya': [], 'Daniel Purba': [51765, 11003995, 43504, 45162], 'Darul Syabirin': [], 'Dwi Yogo Nugroho Wicaksono': [11004590, 11003825, 51632, 11000058, 11004086, 11003852], 'Evendra Lestari': [11008941], 'Firdaus': [51631, 51702, 51708, 51712, 51744, 51748, 51750], 'Fuji Kurniawan': [11000205, 11000403, 11000415, 11000433, 11002332, 11002442, 11002548, 11006602], 'Hamdi Dafius': [51682, 12812, 60797, 42998, 11004039, 46062, 11001894], 'Hary Setiawan': [49037, 51732, 51742, 51747, 51764, 51794, 51802, 51809, 51810, 51813, 51818, 51819], 'Hendri Eka Purnama': [52774, 52875, 52876, 52891, 52952, 59703, 59783, 11006565, 11006567], 'Herman': [11008642, 51733, 51804, 51806, 51926, 51940, 51997, 52287, 52288, 52289, 52306, 51741, 51686], 'Herman Pandapotan Silitonga': [11001121, 11002439, 11002444, 11002664, 11002715, 11002721, 11008066, 11008074], 'Ikhsanul Akmal': [45822, 51933, 51990, 51995, 52093, 62932, 62960, 11003058, 11006563, 11006564, 11006598], 'Ilham Akbar': [], 'Ismun': [60716, 60717, 60718, 60721, 60732, 60734, 60735, 60736, 11002547, 11002903], 'Jarudin Sibarani': [11004624, 11004722, 11004723, 11004724, 11005097, 11005129, 11005132, 11007932], 'Josman Sitorus': [51797, 51799, 11007803, 11007823, 11007830, 11007832, 11007947], 'Mara Tohong Hasibuan': [45954, 47239, 51709, 51714, 51715, 51716, 51717, 51721, 11006595, 11006596, 11006597], 'Melki Sedek Sitompul': [11001415, 11001427, 11008943], 'Muhammad Johan Yusuf': [52089, 52290, 52291, 52292, 52304, 52892, 59906, 11000211, 11006591, 11008810, 11008895], 'Muhammad Rafi Hibatullah': [], 'Muhammad Sofwan': [], 'Muhammadinda Debeno Habibie': [60760, 60763, 60764, 11002938, 11002939, 11003595, 11006569, 11006593, 11006600], 'Nikson Sibuea': [59912, 59968, 60375, 60377, 11008378, 11008380, 11008381, 11008382], 'Nobel Agustoni M': [60203, 60372, 60373, 11002440, 11002448, 11002469, 11006579], 'Ongki Saputra': [41357, 51923, 51935, 51936, 52750, 11006578, 11006612, 11007674, 11007800], 'Raflis Jamal': [39658, 11008698, 47936, 62194], 'Rahadian Saputra': [51697, 51700, 51701, 51703, 51705, 59781, 59785, 59866, 59969, 11008068, 11008809], 'Rahmad Fadli': [42048, 52770, 59973, 11000590, 11001259, 11008389], 'Ramah Rianto': [27668, 51687], 'Reza David Naufal': [51924, 59893, 11001128, 11001132, 11001133, 11001159, 11001257, 11001428, 11005792], 'Rian Dovi': [61681, 61736, 61750, 61752, 62323, 62495, 11008064], 'Riri Yanto': [60083, 60142, 60644, 60711, 60715, 11006566], 'Sahar': [52383, 28019, 21215], 'Samson Simanjuntak': [63519, 63589, 63594, 63607, 63608, 63677, 11000378, 11000379, 11000387, 11002144, 11006571], 'Sudarso Donatus Bakara': [60730, 60759, 11002935, 11005579, 11006568, 11006592, 11008338], 'Swinarso': [60778, 60793, 11000278, 11003738, 11003739, 11003740, 11003741, 11006601], 'Takhozu Kakholilla Muji': [11002349, 11003092], 'Taufik': [49370, 11003721, 11004066, 11006577], 'Tri Hartono': [43860, 52414, 51689], 'Usman': [49039, 62634, 62637, 62639, 62641, 62643, 63162, 63209, 63518], 'Vio Yansisco': [51817, 11002137, 11004626, 11004666, 11004667, 11004668, 11007948, 11007949, 11007950], 'Wawan Irawan': [11005117, 51683, 11003836, 51985, 51685, 11008337, 11001601], 'Widi Trihadma Efendi': [51766, 11001119, 11002974, 11006576], 'Yahudi': [59895, 59899, 59900, 59901, 59904, 59907, 60086, 60087, 60089, 11008067], 'Yohanes Prasetyo': [11001452, 11004193], 'Zeki Chardinal': [11001577, 11001821, 11001822], 'Ade Irwan Nurhidayat': [51707, 51927, 52022, 59970, 60463], 'Agung Yulianto': [11008021, 11008065], 'Agus Wiyoto': [51938, 60462, 11004742, 11004743, 11007827], 'Al Anshar Nurfarid': [], 'Andri': [], 'Arrijal Kurniawan': [51993, 63229, 11000955, 11001816, 11001876, 11002295, 11002297, 11003722, 11003737, 11008019, 11008749], 'Dedi Sudrajat': [51722, 11008762, 11008772, 11008773], 'Doni Oktoveri': [28459, 60689, 11000583, 11001018, 11002094, 11002719, 11003594, 11003684, 11005428, 11005429, 11008271], 'Juanda': [51791, 51820, 60144, 61753, 11000957, 11000959, 11001020, 11001129, 11001131, 11001256, 11001258, 11001740, 11001741, 11001818, 11001874, 11002296, 11002333, 11003055, 11003230, 11003536, 11005576, 11006562, 11006570, 11006573, 11006575, 11008277, 11008752], 'Muhammad Adhitya Ramadhan': [52025, 52074, 52075, 59971, 11004744], 'Riki Wahyudi': [51711], 'Safrijal': [11008755, 63027, 11000818], 'Sarjianto': [49333, 52026, 60769, 11001109, 11001426, 11005594], 'Sujadi': [], 'Tri Handoko': [43775, 62623], 'Wakit Sumanan': [11002198, 51684, 61126, 42907, 11495, 45160], 'Abshor Ardiansyah': [50366, 46265, 49540, 51776, 43182], 'Anhar': [51690, 43009], 'Ezra Karimman Mutu': [51987, 60503], 'Fandro Aneri': [44494, 44619, 11000811, 61125, 62980, 11000950], 'Fefan Junida Sandi': [], 'Gito Heri Saputra Situmorang': [], 'Intan Astina': [62192, 11000414, 11004080, 11004583], 'Jumadi': [], 'Persada Edith El': [], 'Syaifullah Husein': [], 'Victor Parlindungan Napitupulu': [], 'Aditya Dharma Mulyatno': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Adystia Asyura Putri': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Ahmad Yaji': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Andre Oktavihendri': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Arief Mulya': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Ridik Fa Iskandar': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Rio Pratama Yudha': [51907, 11000755, 51602, 48897, 11000792, 48893, 61336, 59700], 'Ronald Jenny': [11005223, 61199, 52072, 11000913, 59696, 11005030, 51807], 'Tarwedi': [60618, 51999, 52400, 50078, 11003614, 11005593, 49634, 11002575, 11003300, 11001508], 'M Dahlan Istanto': [11001325, 48556, 11001736, 11006880, 50557], 'Aditya Reino Susanto': [52087], 'Thopan Sanggerah': [], 'Tri Wahyuni': [], 'Purnama Roni Andi Maran Dika': [], 'Fritz Obed Simamora': [43458], 'Randi Ika Rahman': [], 'Yudi Ristiawan': [60618, 51999, 52400, 17561, 50078, 11003614, 17674, 11005593, 49634, 11002575, 11003300, 11001508, 59700], 'Ahmad Rifqi Fuady': [11001570, 11002695, 51726, 51822, 43745, 11000445, 11001564, 50541, 11001748, 11005476], 'Alex Leo Bastyan': [], 'Ardi Permono Putro': [], 'Hardiyanto Setiawan': [], 'Jufri': [], 'Kurniady Syafutra': [], 'Muhammad Rusdi': [], 'Agus Firnando': [], 'Asrawan': [], 'Dedy Wahyudi': [52874, 51692, 14489, 11001826], 'Dino Hery Sitanggang': [51772, 52404, 11001260, 11001338, 11004721], 'Dwicky Wicaksana S': [51963, 11001728, 11001866, 11002917, 11003727], 'Raymond Tambun': [11000804], 'Septian': [51751, 51778, 51780, 11001551, 11003486, 11003760, 11004073], 'Tezzy Yulivan Mananistrosky': [11009402, 11009623, 40336, 43191, 11002229, 11002230, 11004633], 'Tito Murdiansyah': [], 'Adi Lovia': [60378, 60379, 60380, 60381, 60770, 11004424, 11004612, 11004613, 11005301], 'Agus Cahyo Nugroho': [11004118, 34146, 11001028], 'Andi Hakim Harahap': [51691, 62166], 'Ardiansyah': [], 'Arnold Pratama Putra': [], 'Berto Noven Marsekal': [], 'Dedy Ismanto': [28088, 51695, 11008426], 'Defri Septian Fauzi': [63451, 49337, 11005525, 51175, 63462, 11000821], 'Devi Ulfa Yunita': [], 'Dimas Ihsan Bagaskoro': [], 'Ektorik Dimas': [11008503, 11009656, 11000817], 'Elfia Rahmi': [], 'Fajri Ananda': [], 'Hari Rahmad Perdana': [], 'Heri Purnomo': [38636, 11005514, 49639], 'Marlina Toguma Napitupulu Juniarti': [], 'Moh Satria Danu Ningrat': [], 'Muhammad Affif Hidayat': [], 'Muhammad Furqan': [11005506, 11000760, 63497], 'Muhammad Noufal Achyar': [], 'Rasul Alam Vandana': [], 'Roy Batara': [], 'Suaiman': [], 'Trio Mei Kristin Zendrato': [], 'Yogi Arfandi': []};
+
+
+const NKaryawan = {'Riswandi': ['Ahmad Gufron', 'Apdiansyah', 'Carles Gultom', 'Dedek Suhara', 'Dwi Ananta Pambudi', 'Jefri Afriandi', 'Nggiring Puthu Mahesa', 'Priyo Satriyo Budiharjo', 'Raichan Linggam Triputra', 'Redho Kurniawan', 'Rizky Aulia Melwanda Putra', 'Sarbani', 'Suwarno', 'Yostardianto', 'Yudi Hariyanto', 'Zikrillah Imadi Rahman'], 'Danil Firmansyah': ['Abdullah Zaki', 'Aditia Fikri Novianur', 'Ahmad Ferdi Syamza', 'Aries Wahyu Sumarto', 'Asgaril Asriel', 'Elibertus Djunaidi', 'Lahzu Yazo Mougisa', 'Reza Rivaldo Siregar', 'Taufik Akbar Rangkoto', 'Yudi Ristiawan'], 'Aditia Fikri Novianur': ['Danil Canra', 'Fariz Mayendra', 'Kharisma Thoriq Afifuddin', 'Sutardi'], 'Aries Wahyu Sumarto': ['Agus Wendi Siboro', 'Arie Subekti', 'Hadi Swandana', 'Ikhsanul Taufik', 'Zainul Safi I'], 'Taufik Akbar Rangkoto': ['Achmad Fauzi', 'Harli Alfian Putra', 'Irwan Dwi Pebrianto', 'Muqsit Pranata'], 'Asgaril Asriel': ['Anugrah Satria C.N.', 'Murianto'], 'Reza Rivaldo Siregar': ['Achmad Fauzi', 'Harli Alfian Putra', 'Irwan Dwi Pebrianto', 'Muqsit Pranata'], 'Abdullah Zaki': ['Afrizon Nedi', 'Arianto'], 'Ahmad Ferdi Syamza': ['Ryo Surya Deewana', 'Sudarwadi'], 'Lahzu Yazo Mougisa': [''], 'Elibertus Djunaidi': ['Lahzu Yazo Mougisa'], 'Muhammad Arifin': ['Ahmad Fauzi', 'Dian Luberiono', 'Muhamad Syukri', 'Rohil Fajri'], 'Irawanto Sudarma': ['Amir Hasan Pane', 'Danil Firmansyah', 'Dedy Wahyudi', 'Kiki Afriliandi', 'Mulyadi', 'Panji Ridwan', 'Raymond Tambun', 'Rio Pratama Yudha', 'Riswandi', 'Tezzy Yulivan Mananistrosky', 'Yudi Ristiawan'], 'Alfino Ariansyah': ['Andrian Renata', 'Isradia Redesa', 'Nanda Tridhinata', 'Rika Safitri', 'Tommy Mahendra'], 'Andrian Renata': ['Isradia Redesa', 'Rika Safitri', 'Tommy Mahendra'], 'Agus Salim': ['Alfino Ariansyah', 'Andrian Renata', 'Isradia Redesa', 'Nanda Tridhinata', 'Rika Safitri', 'Tommy Mahendra'], 'Nanda Tridhinata': ['Isradia Redesa', 'Rika Safitri', 'Tommy Mahendra'], 'Asi Nauli Sitorus': [''], 'Beny Kusumobroto': ['Asi Nauli Sitorus', 'Deavid Pratama Putra', 'Decazkia Dwi Fendina', 'Eko Cahyono Sri Widodo', 'Faisal Ramadhan', 'Fransiskus', 'Hanis Tri Cahyono', 'Heriyus', 'Ra Junaedi Mulya', 'Saritung Bin Isman', 'Syaiful Bahri', 'Toga Simanjuntak', 'Yudi Sasono'], 'Deavid Pratama Putra': [''], 'Decazkia Dwi Fendina': [''], 'Eko Cahyono Sri Widodo': ['Decazkia Dwi Fendina'], 'Faisal Ramadhan': [''], 'Fransiskus': [''], 'Hanis Tri Cahyono': [''], 'Heriyus': ['Deavid Pratama Putra', 'Faisal Ramadhan', 'Fransiskus', 'Saritung Bin Isman', 'Syaiful Bahri', 'Toga Simanjuntak', 'Yudi Sasono'], 'Ra Junaedi Mulya': [''], 'Saritung Bin Isman': [''], 'Syaiful Bahri': [''], 'Toga Simanjuntak': [''], 'Yudi Sasono': [''], 'Ahmad Gufron': ['Adityo Pratama ', 'Ahmad Zainuri', 'Akbar Cahyo Kurniawan', 'Aris Dwi Atmaja', 'Budi Setyawan ', 'Darwin', 'Fanji P Gunmul ', 'Firda Lius', 'Haris Surya Dharma', 'Joko Tri Wiyanto', 'Muhammad Hanif', 'Muslim', 'Rival H S', 'Roberto Nikolas Fx', 'Rudi Rante', 'Susana', 'Syahrul Syamsudin', 'Wahyudi', 'Yoga Satria'], 'Samiaji': ['Aditia Fenanda', 'Afdal Julanda', 'Ahmad Chaidir Kamal', 'Aldian Alqorni', 'Andi Setiawan', 'Andri Hidayat', 'Ari Dwi Santoso (Qc)', 'Arif Imam Witjaksono', 'Beni Candra Eka Putra', 'Bintan Pardomuan Silaban', 'Fadri Alvamei Sandi ', 'Fajar Jufrianto', 'Fajar Mardiono', 'Farid', 'Frendi', 'Gomgom Gultom', 'Heksa Bagus Santoso', 'Hermoko Satriyo Nugroho', 'Ilhami Dani', 'Indra', 'Janter Krisos Simorangkir', 'Joni Saputra', 'Leo Gusty Chandra Sitompul', 'M Viqyh', 'M. Rifki', 'Muhammad Farras Samudra', 'Muhammad Hajer', 'Muhammad Ikhlas Ikhsan', 'Muhammad Iqbal Febriansyah', 'Nathanael Leandro S.', 'Randi Durisno', 'Ridwan', 'Riko Sitorus', 'Rolly Lumban Gaol', 'Sadam Husen', 'Shofaat Cahyo', 'Surya Purnama', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Warisun Anazhif', 'Wisxi Yoga P', 'Yoga Juni Saputra', 'Yosep Suandra', 'Yulefri', 'Zul Vawandri'], 'Apdiansyah': ['Afdal Julanda', 'Agus Suwarno', 'Ahmad Chaidir Kamal', 'Aldian Alqorni', 'Alif Nur Aziz', 'Andri Hidayat', 'Angga Hermanto', 'Arif Imam Witjaksono', 'Arjuliando', 'Awahid', 'Ayub Ferdiansyah', 'Beni Candra Eka Putra', 'Eka Suherlansyah', 'Fajar Jufrianto', 'Fajar Mardiono', 'Fajri Anshari', 'Farid', 'Gomgom Gultom', 'Hanifa Rahman', 'Hermoko Satriyo Nugroho', 'Ilhami Dani', 'Indra', 'Janter Krisos Simorangkir', 'Joni Saputra', 'Lagusti Indria Pratama Marbun', 'Leo Gusty Chandra Sitompul', 'Marino Dito Arry', 'Muhammad Farras Samudra', 'Muhammad Hajer', 'Muhammad Ikhlas Ikhsan', 'Muhammad Ilham Kaladzi', 'Muhammad Iqbal Febriansyah', 'Pandeka Muhammad Alghifary', 'Ridwan', 'Sadam Husen', 'Sanju Anggara', 'Surya Purnama', 'Sutriono', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Warisun Anazhif', 'Wisxi Yoga P', 'Yoga Juni Saputra', 'Yosep Suandra', 'Yulefri'], 'Carles Gultom': ['Aditia Fenanda', 'Afdal Julanda', 'Ahmad Chaidir Kamal', 'Aidil Olivia', 'Aldian Alqorni', 'Andi Setiawan', 'Anugrah Diotama', 'Ari Dwi Santoso (Qc)', 'Arif Imam Witjaksono', 'Bintan Pardomuan Silaban', 'Fadri Alvamei Sandi ', 'Fajar Jufrianto', 'Fajar Mardiono', 'Feriansyah', 'Fery Kristiawan', 'Frendi', 'Heksa Bagus Santoso', 'Hermoko Satriyo Nugroho', 'Indra', 'Janter Krisos Simorangkir', 'Leo Gusty Chandra Sitompul', 'M Viqyh', 'M. Rifki', 'M. Suprayitno', 'Muhammad Fariz', 'Muhammad Farras Samudra', 'Muhammad Ikhlas Ikhsan', 'Muhammad Iqbal Febriansyah', 'Muhlis', 'Nathanael Leandro S.', 'Nova Andamari', 'Randi Durisno', 'Riko Sitorus', 'Rolly Lumban Gaol', 'Shofaat Cahyo', 'Surya Purnama', 'Suwaji', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Warisun Anazhif', 'Wisxi Yoga P', 'Yoga Juni Saputra', 'Yogi Eka Putra', 'Yosep Suandra', 'Yulefri'], 'Dedek Suhara': ['Aditia Fenanda', 'Afdal Julanda', 'Ahmad Chaidir Kamal', 'Aidil Olivia', 'Aldian Alqorni', 'Andi Setiawan', 'Andri Hidayat', 'Anugrah Diotama', 'Ari Dwi Santoso (Qc)', 'Beni Candra Eka Putra', 'Bintan Pardomuan Silaban', 'Fadri Alvamei Sandi ', 'Fajar Jufrianto', 'Farid', 'Feriansyah', 'Fery Kristiawan', 'Frendi', 'Gomgom Gultom', 'Heksa Bagus Santoso', 'Hermoko Satriyo Nugroho', 'Ilhami Dani', 'Indra', 'Joni Saputra', 'M Viqyh', 'M. Rifki', 'M. Suprayitno', 'Muhammad Fariz', 'Muhammad Farras Samudra', 'Muhammad Ikhlas Ikhsan', 'Muhlis', 'Nathanael Leandro S.', 'Nova Andamari', 'Randi Durisno', 'Ridwan', 'Riko Sitorus', 'Rolly Lumban Gaol', 'Sadam Husen', 'Shofaat Cahyo', 'Suwaji', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Yoga Juni Saputra', 'Yogi Eka Putra', 'Yulefri', 'Zul Vawandri'], 'Dedi Setiawan': ['Ahmad Irvan', 'Andi Susilo', 'Ayi Kosasih', 'Evan Muhaimin', 'Febri Fajar Dwi Purnomo', 'Maju Ekasyahputra Pandiangan', 'Misbahuddin', 'Muhammad Khadri', 'Nur Mansyah', 'Rusydi Adnan'], 'Dwi Ananta Pambudi': ['Aditia Fenanda', 'Agenes Fransisko', 'Agus Suwarno', 'Aidil Olivia', 'Alif Nur Aziz', 'Andhika Dwi Pratama', 'Andri Hidayat', 'Angga Hermanto', 'Anugrah Diotama', 'Arjuliando', 'Awahid', 'Ayub Ferdiansyah', 'Bambang Irawanto', 'Beni Candra Eka Putra', 'Dodi Fugara', 'Eka Suherlansyah', 'Fajri Anshari', 'Farid', 'Feriansyah', 'Fery Kristiawan', 'Firman Wahyu', 'Gomgom Gultom', 'Hanifa Rahman', 'Hendra Mahardeka', 'Ilhami Dani', 'Joni Saputra', 'Lagusti Indria Pratama Marbun', 'M. Rifki', 'M. Suprayitno', 'Marino Dito Arry', 'Muhamad Yusar', 'Muhammad Fariz', 'Muhammad Hajer', 'Muhammad Ilham Kaladzi', 'Muhlis', 'Nova Andamari', 'Pandeka Muhammad Alghifary', 'Ridwan', 'Risky Nasrullah', 'Rizaldi Basyirun', 'Sadam Husen', 'Sanju Anggara', 'Sutriono', 'Suwaji', 'Zul Vawandri'], 'Jefri Afriandi': ['Afdal Julanda', 'Ahmad Chaidir Kamal', 'Aldian Alqorni', 'Andi Setiawan', 'Andri Hidayat', 'Ari Dwi Santoso (Qc)', 'Arif Imam Witjaksono', 'Arjuliando', 'Beni Candra Eka Putra', 'Bintan Pardomuan Silaban', 'Fadri Alvamei Sandi ', 'Fajar Jufrianto', 'Fajar Mardiono', 'Farid', 'Frendi', 'Gomgom Gultom', 'Heksa Bagus Santoso', 'Hermoko Satriyo Nugroho', 'Ilhami Dani', 'Indra', 'Janter Krisos Simorangkir', 'Joni Saputra', 'Leo Gusty Chandra Sitompul', 'Muhammad Farras Samudra', 'Muhammad Hajer', 'Muhammad Ikhlas Ikhsan', 'Muhammad Iqbal Febriansyah', 'Nathanael Leandro S.', 'Randi Durisno', 'Ridwan', 'Riko Sitorus', 'Rolly Lumban Gaol', 'Sadam Husen', 'Sanju Anggara', 'Shofaat Cahyo', 'Surya Purnama', 'Sutriono', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Warisun Anazhif', 'Wisxi Yoga P', 'Yoga Juni Saputra', 'Yogi Eka Putra', 'Yosep Suandra', 'Yulefri'], 'Jumono': ['Ahmad Irvan', 'Andi Susilo', 'Ayi Kosasih', 'Evan Muhaimin', 'Febri Fajar Dwi Purnomo', 'Maju Ekasyahputra Pandiangan', 'Misbahuddin', 'Muhammad Khadri', 'Nur Mansyah', 'Rusydi Adnan'], 'Kiki Afriliandi': ['Ahmad Gufron', 'Apdiansyah', 'Carles Gultom', 'Dedek Suhara', 'Dwi Ananta Pambudi', 'Jefri Afriandi', 'Nggiring Puthu Mahesa', 'Priyo Satriyo Budiharjo', 'Raichan Linggam Triputra', 'Redho Kurniawan', 'Rizky Aulia Melwanda Putra', 'Sarbani', 'Suwarno', 'Yostardianto', 'Yudi Hariyanto', 'Zikrillah Imadi Rahman'], 'Mulyadi': ['Amir Hasan Pane', 'Riswandi', 'Kiki Afriliandi', 'Panji Ridwan', 'Priyo Satriyo Budiharjo', 'Antoni Fernandes', 'Elfiheriyanto', 'Ferry Marizon', 'Hendrio Safari', 'Ilham', 'Indrajaya', 'Refi Dewanto', 'Rendi Mulia', 'Romyadi', 'Yankori Saulian Simbolon'], 'Nggiring Puthu Mahesa': ['Afdal Julanda', 'Agus Suwarno', 'Ahmad Chaidir Kamal', 'Aldian Alqorni', 'Alif Nur Aziz', 'Andri Hidayat', 'Angga Hermanto', 'Arif Imam Witjaksono', 'Arjuliando', 'Awahid', 'Ayub Ferdiansyah', 'Beni Candra Eka Putra', 'Fajar Jufrianto', 'Fajar Mardiono', 'Farid', 'Gomgom Gultom', 'Hanifa Rahman', 'Hermoko Satriyo Nugroho', 'Ilhami Dani', 'Indra', 'Janter Krisos Simorangkir', 'Joni Saputra', 'Lagusti Indria Pratama Marbun', 'Leo Gusty Chandra Sitompul', 'Marino Dito Arry', 'Muhammad Farras Samudra', 'Muhammad Hajer', 'Muhammad Ikhlas Ikhsan', 'Muhammad Ilham Kaladzi', 'Muhammad Iqbal Febriansyah', 'Pandeka Muhammad Alghifary', 'Ridwan', 'Sadam Husen', 'Sanju Anggara', 'Shofaat Cahyo', 'Surya Purnama', 'Sutriono', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Warisun Anazhif', 'Wisxi Yoga P', 'Yoga Juni Saputra', 'Yosep Suandra', 'Yulefri', 'Zul Vawandri'], 'Panji Ridwan': ['Ahmad Gufron', 'Apdiansyah', 'Carles Gultom', 'Dedek Suhara', 'Dwi Ananta Pambudi', 'Jefri Afriandi', 'Nggiring Puthu Mahesa', 'Priyo Satriyo Budiharjo', 'Raichan Linggam Triputra', 'Redho Kurniawan', 'Rizky Aulia Melwanda Putra', 'Sarbani', 'Suwarno', 'Yostardianto', 'Yudi Hariyanto', 'Zikrillah Imadi Rahman'], 'Priyo Satriyo Budiharjo': ['Ahmad Gufron', 'Apdiansyah', 'Carles Gultom', 'Dedek Suhara', 'Dwi Ananta Pambudi', 'Jefri Afriandi', 'Nggiring Puthu Mahesa', 'Priyo Satriyo Budiharjo', 'Raichan Linggam Triputra', 'Redho Kurniawan', 'Rizky Aulia Melwanda Putra', 'Sarbani', 'Suwarno', 'Yostardianto', 'Yudi Hariyanto', 'Zikrillah Imadi Rahman'], 'Raichan Linggam Triputra': ['Adityo Pratama ', 'Ahmad Zainuri', 'Akbar Cahyo Kurniawan', 'Aris Dwi Atmaja', 'Budi Setyawan ', 'Darwin', 'Fanji P Gunmul ', 'Firda Lius', 'Haris Surya Dharma', 'Joko Tri Wiyanto', 'Muhammad Hanif', 'Muslim', 'Rival H S', 'Roberto Nikolas Fx', 'Rudi Rante', 'Susana', 'Syahrul Syamsudin', 'Wahyudi', 'Yoga Satria'], 'Redho Kurniawan': ['Fajar Jufrianto', 'Tommy Setia Budi', 'Yulefri', 'Ahmad Chaidir Kamal', 'Aldian Alqorni', 'Afdal Julanda', 'Muhammad Farras Samudra', 'Hermoko Satriyo Nugroho', 'Wafi Hidayatullah', 'Surya Purnama', 'Yosep Suandra', 'Leo Gusty Chandra Sitompul', 'Fajar Mardiono', 'Wisxi Yoga P', 'Warisun Anazhif', 'Arif Imam Witjaksono', 'Muhammad Iqbal Febriansyah', 'Janter Krisos Simorangkir', 'Ridwan', 'Sadam Husen', 'Joni Saputra', 'Ilhami Dani', 'Andri Hidayat', 'Gomgom Gultom', 'Zul Vawandri', 'Beni Candra Eka Putra', 'Farid', 'Rolly Lumban Gaol', 'Andi Setiawan', 'Nathanael Leandro S.', 'Bintan Pardomuan Silaban', 'Ari Dwi Santoso (Qc)', 'Heksa Bagus Santoso', 'Riko Sitorus', 'Randi Durisno', 'Fadri Alvamei Sandi ', 'Indra', 'Sanju Anggara', 'Arjuliando', 'Frendi', 'Yoga Juni Saputra', 'M Viqyh', 'Sutriono', 'Yogi Eka Putra', 'Muhammad Ikhlas Ikhsan'], 'Rizky Aulia Melwanda Putra': ['Aditia Fenanda', 'Afdal Julanda', 'Agenes Fransisko', 'Ahmad Chaidir Kamal', 'Aidil Olivia', 'Aldian Alqorni', 'Andhika Dwi Pratama', 'Andi Setiawan', 'Anugrah Diotama', 'Ari Dwi Santoso (Qc)', 'Bambang Irawanto', 'Bintan Pardomuan Silaban', 'Dodi Fugara', 'Eka Suherlansyah', 'Fadri Alvamei Sandi ', 'Fajar Jufrianto', 'Fajri Anshari', 'Feriansyah', 'Fery Kristiawan', 'Firman Wahyu', 'Frendi', 'Heksa Bagus Santoso', 'Hendra Mahardeka', 'Hermoko Satriyo Nugroho', 'M Viqyh', 'M. Rifki', 'M. Suprayitno', 'Muhamad Yusar', 'Muhammad Fariz', 'Muhammad Farras Samudra', 'Muhammad Hajer', 'Muhammad Ilham Kaladzi', 'Muhlis', 'Nathanael Leandro S.', 'Nova Andamari', 'Randi Durisno', 'Riko Sitorus', 'Risky Nasrullah', 'Rizaldi Basyirun', 'Rolly Lumban Gaol', 'Suwaji', 'Tommy Setia Budi', 'Wafi Hidayatullah', 'Yogi Eka Putra', 'Yulefri'], 'Sarbani': ['Agus Sunarno', 'Ardhanny Wimbo Yonastio', 'Aris Setiawan', 'Diky Kurniawan', 'Edy Rohmat Nur Azis', 'Fagar Jumadi Gunmul', 'Faisal Fahmi', 'Feri Idaman', 'Galuh Susedy', 'Hotma Tua', 'Irfan Arif', 'Jasri', 'Jhansen H Panjaitan', 'Muhamad Irvan', 'Muhamad Rindu Aji Gasari', 'Rahmad Fadhly A', 'Rendi Setiawan', 'Robert Oktavianus', 'Setyo Cahyono', 'Taufik Ulya Rahmad'], 'Suwarno': ['Agus Sunarno', 'Ardhanny Wimbo Yonastio', 'Aris Setiawan', 'Diky Kurniawan', 'Edy Rohmat Nur Azis', 'Fagar Jumadi Gunmul', 'Faisal Fahmi', 'Feri Idaman', 'Galuh Susedy', 'Hotma Tua', 'Irfan Arif', 'Jasri', 'Jhansen H Panjaitan', 'Muhamad Irvan', 'Muhamad Rindu Aji Gasari', 'Rahmad Fadhly A', 'Rendi Setiawan', 'Robert Oktavianus', 'Setyo Cahyono', 'Taufik Ulya Rahmad'], 'Yostardianto': ['Aditia Fenanda', 'Agenes Fransisko', 'Agus Suwarno', 'Aidil Olivia', 'Alif Nur Aziz', 'Andhika Dwi Pratama', 'Andi Setiawan', 'Angga Hermanto', 'Anugrah Diotama', 'Ari Dwi Santoso (Qc)', 'Awahid', 'Ayub Ferdiansyah', 'Bambang Irawanto', 'Bintan Pardomuan Silaban', 'Dodi Fugara', 'Eka Suherlansyah', 'Fadri Alvamei Sandi ', 'Fajri Anshari', 'Feriansyah', 'Fery Kristiawan', 'Firman Wahyu', 'Hanifa Rahman', 'Heksa Bagus Santoso', 'Hendra Mahardeka', 'Lagusti Indria Pratama Marbun', 'M Viqyh', 'M. Rifki', 'M. Suprayitno', 'Marino Dito Arry', 'Muhamad Yusar', 'Muhammad Fariz', 'Muhammad Hajer', 'Muhammad Ilham Kaladzi', 'Muhlis', 'Nathanael Leandro S.', 'Nova Andamari', 'Pandeka Muhammad Alghifary', 'Randi Durisno', 'Riko Sitorus', 'Risky Nasrullah', 'Rizaldi Basyirun', 'Rolly Lumban Gaol', 'Sutriono', 'Suwaji', 'Yoga Juni Saputra'], 'Yudi Hariyanto': ['Agus Sunarno', 'Ardhanny Wimbo Yonastio', 'Aris Setiawan', 'Diky Kurniawan', 'Edy Rohmat Nur Azis', 'Fagar Jumadi Gunmul', 'Faisal Fahmi', 'Feri Idaman', 'Galuh Susedy', 'Hotma Tua', 'Irfan Arif', 'Jasri', 'Jhansen H Panjaitan', 'Muhamad Irvan', 'Muhamad Rindu Aji Gasari', 'Rahmad Fadhly A', 'Rendi Setiawan', 'Robert Oktavianus', 'Setyo Cahyono', 'Taufik Ulya Rahmad'], 'Zikrillah Imadi Rahman': ['Adityo Pratama ', 'Ahmad Zainuri', 'Akbar Cahyo Kurniawan', 'Aris Dwi Atmaja', 'Budi Setyawan ', 'Darwin', 'Fanji P Gunmul ', 'Firda Lius', 'Haris Surya Dharma', 'Joko Tri Wiyanto', 'Muhammad Hanif', 'Muslim', 'Rival H S', 'Roberto Nikolas Fx', 'Rudi Rante', 'Susana', 'Syahrul Syamsudin', 'Wahyudi', 'Yoga Satria'], 'Muariman': ['Agus Cahyo Nugroho', 'Anhar', 'Dedy Ismanto', 'Ramah Rianto', 'Sahar', 'Tri Hartono', 'Wakit Sumanan'], 'Afdal': ['Rachel Ababil', 'Rahmat', 'Oskar Oppusunggu', 'Agus Riadi', 'Riki Rikardo'], 'Agusnedi Salwanto': ['Salmon Ginting', 'Supari', 'Andes Putra', 'Indra Riadi', 'M. Supiyanto', 'Meza Leandra'], 'Amrizon': ['Al Hudri', 'Jandri Maruli Siregar Tua', 'Jhon Wesly Panjaitan', 'Gunawan', 'Yoppy Tayora', 'Muhammad Mat Sitar', 'Eko Frilla Wijaya', 'Ranil Ari Wanda'], 'Andana': ['Imom Solih Hasibuan', 'Erwinsyah', 'Adrial', 'Riko Panduwinoto', 'Bayu Ilham', 'Hendra Heraska', 'Jefrianto', 'Toni Herman Saputra'], 'Anggi Prananta Surbakti': ['Muhammad Ferki', 'Jaen Ma Ruf', 'Andi Wijaya', 'Syahroni', 'Tri Gianto', 'Bambang Irawan', 'Rudy Arianto', 'Fatkhul Mubin', 'Andi Apriyanto', 'Frenky', 'Agung Ramadhan'], 'Ardi Juwanda': ['Agusnedi Salwanto', 'Andana', 'Hendri Eka Purnama', 'Ilham Akbar', 'Muhammad Rafi Hibatullah', 'Muhammad Sofwan', 'Rahmad Fadli', 'Taufik'], 'Budi Supriadi S': ['Tomi', 'Robin Saklana Saputra', 'Agung Pribowo'], 'Chandra Wijaya': [''], 'Daniel Purba': ['Jarudin Sibarani', 'Rian Dovi', 'Samson Simanjuntak', 'Usman'], 'Darul Syabirin': [''], 'Dwi Yogo Nugroho Wicaksono': ['Chandra Wijaya', 'Darul Syabirin', 'Nobel Agustoni M', 'Ongki Saputra', 'Takhozu Kakholilla Muji', 'Widi Trihadma Efendi'], 'Evendra Lestari': ['Randi Yadi'], 'Firdaus': ['Nasrul', 'Boni Putra', 'Syafrianto', 'Sudirman', 'Ujang Agusman', 'Manimbul Simare Mare', 'Joni Usup Pasaribu'], 'Fuji Kurniawan': ['Heriyanto', 'Hadi Susilo', 'Eko Suratno', 'Renol Supriadi', 'Adytia Warman Siregar', 'Ramadan Siregar', 'Herman Suandi', 'Aldi Iqrom'], 'Hamdi Dafius': ['Ade Irwan Nurhidayat', 'Agung Yulianto', 'Afdal', 'Juanda', 'Muhammadinda Debeno Habibie', 'Swinarso', 'Vio Yansisco'], 'Hary Setiawan': ['Marsoni Hendri', 'Asmuni', 'M Imron', 'M Ali', 'Juni Harto Manik', 'Nurdin', 'Roy Winner Pranata Sembiring', 'Al Fikri', 'Boy Chandra', 'Erik Silwan Prayoga', 'Ganda Putra', 'Rifi Aswandi'], 'Hendri Eka Purnama': ['Yogi M', 'Pikal', 'Anton Budi Setiawan', 'Ateng Riadi', 'Dian Abadi', 'Doni Irawan', 'Lestari Wirianto', 'Apinas Alvindo', 'Ari Irawan'], 'Herman': ['Evendra Lestari', 'Firdaus', 'Pitri Yandi', 'Zaini Ahmad Siis', 'Bambang Irawan', 'Jufri Muksin', 'Tamrin', 'Khamzas', 'Ismal', 'Suhada', 'Maruli Tua Simanjuntak', 'Melki Sedek Sitompul', 'Nikson Sibuea'], 'Herman Pandapotan Silitonga': ['Zulkayadi', 'Seprizoni', 'Asef Nirwan', 'Ari Sutrisno', 'Willy Iskandar', 'Hendri Haryanto', 'Hari Heryana', 'Yoga Yohana'], 'Ikhsanul Akmal': ['Ricky Denis Villa', 'Joko Guntoro', 'Alamsyah Simbolon', 'Agus Budianto', 'Putra Jaya', 'Andi Sumardi', 'Iwan Putra', 'Maudis Paimansyah', 'Rahmat Hidayat', 'Bagas Irawan', 'Muhammad Rizky Onasis'], 'Ilham Akbar': [''], 'Ismun': ['Desi Ardi', 'Donny Helyandri', 'Miswanto', 'Jafrizal', 'Bobi Adi Candra', 'Eko Prasojo', 'Eriyon', 'Novit Nazri', 'Wahyono', 'Sentot Tribowo'], 'Jarudin Sibarani': ['Bayu Sambara', 'Muhamad Jundri', 'Taupik Rahman', 'Firdaus', 'Budi Santoni', 'M Alfado', 'Bambang Susanto', 'Syafronal'], 'Josman Sitorus': ['Ahmad Jais', 'Ansori', 'Abdullah H', 'Edi Mustofa Kamal', 'M Randi', 'Roma Barus', 'Doni Rahmad'], 'Mara Tohong Hasibuan': ['Mangatur Situmorang', 'Randi Yufrian', 'Adrianto', 'Antoni Fernandes', 'Ali Amran', 'Benvridius Subur Sihite', 'Bangun Sieh Pakpahan', 'Afri Yanto', 'Didik Wiranda', 'Reinaldi Angga Rikza', 'Aldi'], 'Melki Sedek Sitompul': ['Maghel Hendrik', 'Ardani Saputra', 'Irvandi Kurnia Utama'], 'Muhammad Johan Yusuf': ['Andi', 'Tarmizi B', 'Yansi', 'Abdul Halim', 'Zulpahmi', 'Supriyadi', 'Zirwanto Saputra', 'Agus Suryanto', 'Lutphi Aziz', 'Kamidal', 'Muhammad Erwin'], 'Muhammad Rafi Hibatullah': [''], 'Muhammad Sofwan': [''], 'Muhammadinda Debeno Habibie': ['Habibulhuda Sy', 'Supianto', 'Zeki', 'Rinaldo', 'Rudy Amriady', 'Justinus Aritonang', 'Soegandi', 'Bima Wahyu Saputra', 'Dani Kurniawan'], 'Nikson Sibuea': ['Revan Luxmana', 'Sopiyadi', 'Mariyono', 'Yanto', 'Hasbullah', 'Koswara', 'Candra', 'M. Dandi Aprisya'], 'Nobel Agustoni M': ['Jhonny', 'Jeka Usman', 'Pastoni', 'Riyad Usman', 'Heryan Perwandi', 'Suri Yanto', 'Budi Rahmad'], 'Ongki Saputra': ['Saputra Jema', 'Java Sulung Setiabudi', 'Edi Saputra', 'Andre Haryanto', 'Rozi Farma', 'Yora Abdimas', 'Doni Afriyanto', 'Adi Gunawan', 'Wiratno'], 'Raflis Jamal': ['Ismun', 'Riri Yanto', 'Sudarso Donatus Bakara', 'Zeki Chardinal'], 'Rahadian Saputra': ['Anggie Munandar', 'Budi Arja Saputra', 'Adi Putra', 'Andre', 'Deka Wijaya', 'Rigo Jaya Putra', 'Sandi Nayoan', 'Resko Kurniawan', 'Darmawis', 'Marius Syah Putra', 'Yohan Fajar Kristanto'], 'Rahmad Fadli': ['Rio Anugrah', 'Iriansah', 'Najmi Faizal', 'Nurhadi', 'Rikson Simanjuntak', 'Ismail Marzuki'], 'Ramah Rianto': ['Hamdi Dafius', 'Raflis Jamal'], 'Reza David Naufal': ['Olrafi Bhakti Aditya', 'Jhodi Prakasa', 'Ardan Saleh Siregar', 'Deni Mahendra', 'Mutasor', 'Anggi Sumito', 'Iswandi', 'Almi Renaldi', 'Iwan Saputra Lubis'], 'Rian Dovi': ['Ilman', 'Ponidi', 'Robermaltus', 'Danu Arybowo', 'Suharman', 'Mariono', 'Branto Adhi Santosa'], 'Riri Yanto': ['Roperdi', 'Khoirul Mustaqim', 'Gunawan', 'Robet Simanjuntak', 'Nurdin', 'Muhamat Fajri'], 'Sahar': ['Ardi Juwanda', 'Herman', 'Wawan Irawan'], 'Samson Simanjuntak': ['Bambang Supriadi', 'Putra Reski', 'Rinaldi R', 'Ivan Mardika', 'Arif Kurniawan', 'Willy Frima', 'Parhitean Nauli Baringin', 'Risbonchun', 'Prancis Purba', 'Hengki Lovero Sinaga', 'Rendi Oki Saputra'], 'Sudarso Donatus Bakara': ['Irsyam Sukrayme', 'Guswandi', 'Wahidin', 'Suwarno F.P Siregar', 'Vindo', 'Seli Pratama', 'Adil Prabowo'], 'Swinarso': ['Peri Riyanto', 'M Arief Pane', 'Mahiddin', 'Yandi', 'Erlangga', 'Azam Muhdi', 'Awang Erlangga', 'Taufik Khomsyah'], 'Takhozu Kakholilla Muji': ['Abdur Rahman', 'Muhammad Faisal'], 'Taufik': ['Agusti Safrizal', 'Jupen Tarianto Sinaga', 'Rozi Gunawan', 'Andika'], 'Tri Hartono': ['Daniel Purba', 'Dwi Yogo Nugroho Wicaksono', 'Yohanes Prasetyo'], 'Usman': ['Andy Wiranata', 'Ironi', 'Sumito', 'Teguh Proksan Ariyanto', 'Kasiadi', 'Ondri', 'Muhammad Leo Syaputra', 'Rudi Ismanto', 'Cengkwantai'], 'Vio Yansisco': ['Zulpikar', 'Aidi Johanes', 'Marjoni', 'Bayu Sanjaya', 'Rian Hidayat', 'Muhammad Shobirin', 'Rian Okta Rio', 'Juli Syapriyadi', 'Deni Ranjez Saputra'], 'Wawan Irawan': ['Amrizon', 'Anggi Prananta Surbakti', 'Ikhsanul Akmal', 'Josman Sitorus', 'Mara Tohong Hasibuan', 'Rahadian Saputra', 'Reza David Naufal'], 'Widi Trihadma Efendi': ['Mulyadi', 'Joni Afriko', 'Fajar Muslimin', 'Zulyanri'], 'Yahudi': ['Okta Maulanda', 'Pri Hardodi', 'Pauzil Akmal', 'Musniyadi', 'Muhamad Dio', 'Andi Syaputra', 'Romi', 'Rudi Alvin Matheus Silalahi', 'Rio Andala', 'Fanzo Lades Mana'], 'Yohanes Prasetyo': ['Fuji Kurniawan', 'Herman Pandapotan Silitonga'], 'Zeki Chardinal': ['Epdi Yanto', 'M. Leofanali', 'Armen'], 'Ade Irwan Nurhidayat': ['Andi Rahmat', 'Jul Juanda Harahap', 'Zulfahri', 'Pirdaus', 'Andri'], 'Agung Yulianto': ['Febriandito Dwi Cahyo', 'Johan Safri'], 'Agus Wiyoto': ['Elkasri', 'Seprinal', 'Alek Sandra', 'Fauzil Akmal', 'Muhammad Jadawi'], 'Al Anshar Nurfarid': [''], 'Andri': [''], 'Arrijal Kurniawan': ['Nazirwan T', 'Daniel Party Damanik', 'Muhamad Anton Saputra', 'Afandy Setiawan', 'R. Prayogi J. A', 'Irwan Ismanto', 'Hendri Gustinoer', 'Sopian Hadi', 'Zikrillah', 'Jepin Novliansyah', 'Thomu Yessa Simanjuntak'], 'Dedi Sudrajat': ['Diki Rahmat', 'Abdul Samad', 'Bisma Ade Mahari', 'Irwanda'], 'Doni Oktoveri': ['Dasirin', 'Pirna Irwansyah', 'Supriyanto', 'Yulia Fransisco', 'Timbul', 'Sigit Al Ampuh', 'Muhammad Irfan Septiawan', 'Sapari', 'Damar Saputro', 'Sapri', 'Restu Fauzi'], 'Juanda': ['Jhon Hendri', 'Wagito', 'Romadhon Tambunan', 'Al Qodri', 'Hermanto', 'Syamsir', 'Ridho Zainuddin Putra', 'Antony Radianof Putra', 'Nalpioko', 'Nauval Habari', 'Yolri Asmawir', 'Surono', 'Turmoko', 'Alfiandri', 'Genta Prasetyo', 'Rudi Yanto', 'Andri Priyanto', 'Arry Yen Hidayat', 'Hadi Juanda', 'Man Eka Putra', 'Muji Purwanto', 'Haqkiky', 'Dimas Prayogi', 'Halilintar Muhammad Rijalallah', 'Ade Satria', 'Bagas Iwanda Pratama', 'Jeki Mai Fandra'], 'Muhammad Adhitya Ramadhan': ['Mardan', 'Siswanto', 'Herlan Media Putra', 'Sobirin', 'Sisko Iskandar'], 'Riki Wahyudi': ['Agus Wiyoto'], 'Safrijal': ['Arrijal Kurniawan', 'Dedi Sudrajat', 'Muhammad Adhitya Ramadhan'], 'Sarjianto': ['Arizal S', 'Tamrin Damela', 'Agustian Hartanto', 'Togi Simangunsong', 'Itmam Wahid', 'Herman Ys'], 'Sujadi': [''], 'Tri Handoko': ['Doni Oktoveri', 'Sarjianto'], 'Wakit Sumanan': ['Al Anshar Nurfarid', 'Fandro Aneri', 'Riki Wahyudi', 'Safrijal', 'Sujadi', 'Tri Handoko'], 'Abshor Ardiansyah': ['Ezra Karimman Mutu', 'Fefan Junida Sandi', 'Intan Astina', 'Mertuah Padang', 'Victor Parlindungan Napitupulu'], 'Anhar': ['Abshor Ardiansyah', 'Jumadi'], 'Ezra Karimman Mutu': ['Beni Anando', 'Wandes Kristovel'], 'Fandro Aneri': ['Andri', 'Gito Heri Saputra Situmorang', 'Persada Edith El', 'Syaifullah Husein', 'Akbar Radita Prihandana Mulia Harahap', 'Luthfiyah'], 'Fefan Junida Sandi': [''], 'Gito Heri Saputra Situmorang': [''], 'Intan Astina': ['Abdullah Saleh', 'Rechi Retrori Dwisty', 'Chandra Prayoga', 'Mufid Jusef Wiriandi'], 'Jumadi': [''], 'Persada Edith El': [''], 'Syaifullah Husein': [''], 'Victor Parlindungan Napitupulu': [''], 'Aditya Dharma Mulyatno': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Adystia Asyura Putri': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Ahmad Yaji': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Andre Oktavihendri': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Arief Mulya': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Ridik Fa Iskandar': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Rio Pratama Yudha': ['Aditya Dharma Mulyatno', 'Adystia Asyura Putri', 'Ahmad Yaji', 'Andre Oktavihendri', 'Arief Mulya', 'Ridik Fa Iskandar', 'Ronald Jenny', 'Tarwedi'], 'Ronald Jenny': ['Afdal Yumal', 'Deki Apri', 'Muhammad Zaiful', 'Nain Sri Muhammad', 'Riki Efendi', 'Rizky Mahardhika', 'Sulikman'], 'Tarwedi': ['Ahmad Irvan', 'Andi Susilo', 'Ayi Kosasih', 'Evan Muhaimin', 'Febri Fajar Dwi Purnomo', 'Maju Ekasyahputra Pandiangan', 'Misbahuddin', 'Muhammad Khadri', 'Nur Mansyah', 'Rusydi Adnan'], 'M Dahlan Istanto': [''], 'Aditya Reino Susanto': ['Tri Wahyuni'], 'Thopan Sanggerah': [''], 'Tri Wahyuni': [''], 'Purnama Roni Andi Maran Dika': [''], 'Fritz Obed Simamora': ['Purnama Roni Andi Maran Dika'], 'Randi Ika Rahman': [''], 'Yudi Ristiawan': ['Ahmad Irvan', 'Andi Susilo', 'Ayi Kosasih', 'Dedi Setiawan', 'Evan Muhaimin', 'Febri Fajar Dwi Purnomo', 'Jumono', 'Maju Ekasyahputra Pandiangan', 'Misbahuddin', 'Muhammad Khadri', 'Nur Mansyah', 'Rusydi Adnan', 'Tarwedi'], 'Ahmad Rifqi Fuady': ['Alex Leo Bastyan', 'Hardiyanto Setiawan', 'Deki Ternando', 'Hendri Peska', 'Jufri', 'Kurniady Syafutra', 'Heli Yunus', 'Muhammad Rusdi', 'Afrizal Wildan', 'M. Yusuf Peto'], 'Alex Leo Bastyan': [''], 'Ardi Permono Putro': [''], 'Hardiyanto Setiawan': [''], 'Jufri': [''], 'Kurniady Syafutra': [''], 'Muhammad Rusdi': [''], 'Agus Firnando': [''], 'Asrawan': [''], 'Dedy Wahyudi': ['Cici Krisela', 'Raymond Tambun', 'Tezzy Yulivan Mananistrosky', 'Tito Murdiansyah'], 'Dino Hery Sitanggang': ['Noveri Hadiyanto', 'Irpan Agustian', 'Zuhri', 'Jefri Nardi', 'Fahrel Ahmad Juanda'], 'Dwicky Wicaksana S': ['Ade Irwansyah', 'Zikro', 'Rapika', 'Afrizal', 'Joko Suprianto'], 'Raymond Tambun': ['Dwicky Wicaksana S'], 'Septian': ['Harli Dapitson', 'Mangatas Sijabat', 'Hamdani', 'Rengga Prantori', 'Taufik Ismail', 'Paul Aritonang', 'Suwitno'], 'Tezzy Yulivan Mananistrosky': ['Agus Firnando', 'Asrawan', 'Dino Hery Sitanggang', 'Septian', 'Deni Afrizal', 'Yoga Pernando', 'Riki Ramayadi'], 'Tito Murdiansyah': [''], 'Adi Lovia': ['Neki Purwangga', 'Yoga Andika', 'Doni Fahriansah', 'Bobi Sono', 'Sukarni', 'Feri Hidayatullah', 'Dede Eka Putra', 'Furkon Antoni', 'Hendra Sugara'], 'Agus Cahyo Nugroho': ['Ektorik Dimas', 'Heri Purnomo', 'Muhammad Noufal Achyar'], 'Andi Hakim Harahap': ['Elfia Rahmi', 'Roy Batara'], 'Ardiansyah': [''], 'Arnold Pratama Putra': [''], 'Berto Noven Marsekal': [''], 'Dedy Ismanto': ['Andi Hakim Harahap', 'Defri Septian Fauzi', 'Muhammad Furqan'], 'Defri Septian Fauzi': ['Ardiansyah', 'Arnold Pratama Putra', 'Fajri Ananda', 'Marlina Toguma Napitupulu Juniarti', 'Muhammad Affif Hidayat', 'Trio Mei Kristin Zendrato'], 'Devi Ulfa Yunita': [''], 'Dimas Ihsan Bagaskoro': [''], 'Ektorik Dimas': ['Dimas Ihsan Bagaskoro', 'Moh. Satria Danu Ningrat', 'Rasul Alam Vandana'], 'Elfia Rahmi': [''], 'Fajri Ananda': [''], 'Hari Rahmad Perdana': [''], 'Heri Purnomo': ['Adi Lovia', 'Berto Noven Marsekal', 'Suaiman'], 'Marlina Toguma Napitupulu Juniarti': [''], 'Moh Satria Danu Ningrat': [''], 'Muhammad Affif Hidayat': [''], 'Muhammad Furqan': ['Devi Ulfa Yunita', 'Hari Rahmad Perdana', 'Yogi Arfandi'], 'Muhammad Noufal Achyar': [''], 'Rasul Alam Vandana': [''], 'Roy Batara': [''], 'Suaiman': [''], 'Trio Mei Kristin Zendrato': [''], 'Yogi Arfandi': ['']};
+
+
+
+
+	document.addEventListener('DOMContentLoaded', () => {
+		populateSinglelevel('#Department', Dept);
+		setDropPoin('.nilai', Point1, Point2);
+		setDropPoin('.nilai2', Point1, Point1);
+		const iii = localStorage.getItem('DepartmentIndex');
+		if (iii != null) {
+			populateSinglelevel('#NamaPenyelia', Penyelia[iii]);
+			document.querySelector('#NamaPenyelia').disabled = false;
+		}
+		if (form) {
+			for (let i = 0; i < form.elements.length; i++) {
+				const element = form.elements[i];
+				const savedValue = localStorage.getItem(element.id);
+				if (savedValue !== null) {
+					if (element.type === 'checkbox' || element.type === 'radio') {
+						element.checked = (savedValue === 'true');
+					} else {
+						element.value = savedValue;
+					}
+				}
+			}
+			// Save data on input change
+			form.addEventListener('input', (event) => {
+				const element = event.target;
+				if (element.id) { // Ensure the element has an ID
+ 					if (element.type === 'checkbox' || element.type === 'radio') {
+					localStorage.setItem(element.id, element.checked);
+					} else {
+					localStorage.setItem(element.id, element.value);
+					}
+				}
+			});
+		}
+	});
+
+	function updateProgress() {
+		const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+		progressFill.style.width = progress + '%';
+		progressSteps.forEach((step, index) => {
+			const stepNum = index + 1;
+			step.classList.remove('active', 'completed');
+			if (stepNum < currentStep) {
+				step.classList.add('completed');
+			} else if (stepNum === currentStep) {
+				step.classList.add('active');
+			}
+		});
+
+		formSteps.forEach(step => {
+			step.classList.remove('active');
+			if (parseInt(step.dataset.step) === currentStep) {
+				step.classList.add('active');
+			}
+		});
+
+		prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+		nextBtn.textContent = currentStep === totalSteps ? 'Submit' : 'Continue';
+		errorMessage.classList.remove('active');
+	}
+
+	function validateStep() {
+		const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
+		const requiredInputs = currentStepElement.querySelectorAll('[required]');
+		for (let input of requiredInputs) {
+			if (!input.value.trim()) {
+				errorMessage.textContent = 'Please fill in all required fields';
+					errorMessage.classList.add('active');
+				input.focus();
+				return false;
+			}
+			 if (input.type === 'email' && !isValidEmail(input.value)) {
+				errorMessage.textContent = 'Please enter a valid email address';
+				errorMessage.classList.add('active');
+				input.focus();
+				return false;
+			}
+			if (input.type === 'radio') {
+				const radioGroup = currentStepElement.querySelectorAll(`[name="${input.name}"]`);
+				const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+				if (!isChecked) {
+					errorMessage.textContent = 'Please select an option';
+					errorMessage.classList.add('active');
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);}
+
+	function collectFormData() {
+		const ddd = document.querySelector('#Karyawan');
+		const checkedBoxes = document.querySelectorAll('input[name="program[]"]:checked');
+		const programVal = Array.from(checkedBoxes).map(checkbox => checkbox.value);
+		const prog2 = document.querySelector('#programText').value;
+		if(prog2) programVal.push(prog2);
+		const formData = new FormData(form);
+		const data = {};
+		formData.forEach((value, key) => { data[key] = value; });
+		data.Karyawan = ddd.options[ddd.selectedIndex].text;
+		data.SN2 = document.querySelector('#SN2').value;
+		data.program = programVal.join(', ');
+		return data; 
+	}
+	nextBtn.addEventListener('click',  async () => {
+		if (!validateStep()) return;
+		if (currentStep === totalSteps) {
+			const finalData = collectFormData();
+			const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyvpcrrl2OVIqJM4BtLWYrqvbJeel6DpZMP2MSnlruC3fgFxo6p-yYL6dcCrDsf9KG_/exec";
+			try {
+				const response = await fetch(WEB_APP_URL, {
+				method: "POST",
+				mode: "no-cors", // Gunakan 'no-cors' jika mengalami masalah CORS simple
+				body: JSON.stringify(finalData),
+				headers: {"Content-Type": "text/plain;charset=utf-8"}
+				});
+				form.style.display = 'none';
+				document.querySelector('.progress-container').style.display = 'none';
+				document.querySelector('.button-group').style.display = 'none';
+				successMessage.classList.add('active');
+				for (let element of form.elements) {
+					if (element.id) localStorage.removeItem(element.id);
+				}
+			} catch (error) {
+            				console.error("Gagal mengirim:", error);
+            				alert("Terjadi kesalahan pengiriman. Periksa jaringan internet anda!!!");
+			}
+		} else {
+			currentStep++;
+			updateProgress();
+		}
+	});
+
+	prevBtn.addEventListener('click', () => {
+		if (currentStep > 1) {
+			currentStep--;
+			updateProgress();
+		}
+	});
+
+	form.addEventListener('keypress', (e) => {
+		if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+			e.preventDefault();
+			nextBtn.click();
+		}
+	});
+
+	updateProgress();
+
+    </script>
+
+  </body>
+  
+</html>
