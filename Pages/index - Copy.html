@@ -100,7 +100,7 @@
 		//const jsonText = data.substring(47).slice(0, -2);
 		const rows = text.trim().split('\n');
         const headers = rows[0].split(',').map(header => header.trim());
-		const mpData = [];
+		const result = [];
 		for (let i = 1; i < rows.length; i++) {
         	const obj = {};
         	const currentLine = rows[i].split(',');
@@ -108,8 +108,9 @@
         	for (let j = 0; j < headers.length; j++) {
             	obj[headers[j]] = currentLine[j] ? currentLine[j].trim() : '';
         	}
-        	mpData.push(obj);
+        	result.push(obj);
     	}
+		const mpData = JSON.stringify(result);
 		console.log(mpData);
 		alert(mpData[0] +'      '+ mpData[1]);
 		// Process your data here
