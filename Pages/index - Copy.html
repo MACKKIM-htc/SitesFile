@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Mining Academy Sumatera</title>
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box;}
+ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #eee 0%, #aaa 100%);
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 20px; overflow-x: hidden; }
+
+ .container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%; max-width: 100vw; position: relative; overflow: hidden;}
+        .containerA { padding: 10px; margin-bottom: 10px;  position: sticky; top: 10px; z-index: 5;}
+        .containerB { padding: 20px;}
+        .header { text-align: center; position: relative;}
+        .header h1 { color: #ffffff; font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #E3E3E3, #360185);
+            -webkit-background-clip: text;  -webkit-text-fill-color: transparent; background-clip: text;}
+        .header p { color: #fff; font-size: 1rem; font-weight: 600; line-height: 1.5;}
+
+        .progress-container { margin-bottom: 20px; position: relative; z-index: 2;}
+        .progress-bar { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.5); border-radius: 10px; overflow: hidden; margin-bottom: 10px;}
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #a8edea, #fed6e3); border-radius: 10px; width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);}
+        .step-indicators { display: flex; justify-content: space-between; align-items: center;}
+        .step-indicator { width: 30px; height: 30px; border-radius: 50%; background: rgba(164, 204, 217, 0.2); border: 1px solid #fff; display: flex; align-items: center; justify-content: center; color: #415E72; font-weight: 600; transition: all 0.3s ease; position: relative;}
+        .step-indicator.active { background: linear-gradient(135deg, #9B5DE0, #C68EFD); color: #fff; transform: scale(1); box-shadow: 0 5px 20px rgba(255, 236, 210, 0.4);}
+        .step-indicator.active:before { position: absolute; background: white; margin-left: 0px; margin-top: 0px; width: 30px; height: 30px; content: ""; display: block; border-radius: 50%; -webkit-backface-visibility: hidden;
+	animation: wave-animate 3s infinite ease-out;}
+         .step-indicator.active:after { position: absolute; background: white; margin-left: 0px; margin-top: 0px; width: 30px; height: 30px; content: ""; display: block; border-radius: 50%;
+  -webkit-backface-visibility: hidden; opacity: 0; animation: wave-animate 3s 1.5s infinite ease-out;}
+@keyframes wave-animate { 0% { transform: scale(0); opacity: 1; transform-origin: center; } 100% { transform: scale(2); opacity: 0; transform-origin: center; }}
+@keyframes color-loop { 0% { background: #2CAB5B;} 25% { background: #FABC03;} 50% { background: #ED4B40;} 75% { background: #4286F3;} 100% { background: #2CAB5B;}}
+
+        .step-indicator.completed { background: linear-gradient(135deg, #fff, #48B3AF); color: #A7E399;}
+        .step-indicator.completed::after { content: '✓'; position: absolute; color: #fff;}
+        .step-content { position: relative; z-index: 2; min-height: 300px;}
+        .step { display: none;  animation: slideIn 0.5s ease-out;}
+	@keyframes slideIn { from { opacity: 0;  transform: translateX(30px);} to { opacity: 1; transform: translateX(0);}}
+        .step.active { display: block;}
+
+        .form-group { display: grid; grid-template-rows: auto; margin-bottom: 25px;}
+        .form-group label { display: block; color: #360185; font-weight: 600; margin-bottom: 3px; font-size: 0.95rem;}
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 20px; border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: #000; font-size: 1rem;
+            transition: all 0.3s ease; backdrop-filter: blur(10px);}
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #8F87F1; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 7px rgba(143, 135, 241, 0.1);
+            transform: translateY(-2px);}
+        .form-group input::placeholder, .form-group textarea::placeholder, .form-group select { color: rgba(100, 100, 100, 0.5);}
+        .form-group select option { background: #333; color: #fff; }
+        #SN { text-align: center; background-color: #000; color: #fff;}
+
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin-top: 20px;}
+        .custom-checkbox { width: 20px; height: 20px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 4px; background: rgba(255, 255, 255, 0.05); cursor: pointer; position: relative; flex-shrink: 0; transition: all 0.3s ease;}
+        .custom-checkbox.checked { background: linear-gradient(135deg, #fff, #48B3AF); border-color: #ffecd2;}
+        .custom-checkbox.checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #333; font-size: 12px; font-weight: bold;}
+        .checkbox-group label { color: rgba(100, 100, 100, 0.9); font-size: 0.9rem; line-height: 1.4; cursor: pointer; margin: 0;}
+
+        .buttons { display: flex; gap: 15px; margin-top: 40px;}
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; flex: 1;}
+        .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #ffffff; border: 2px solid rgba(255, 255, 255, 0.2);}
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);}
+        .btn-primary { background: linear-gradient(135deg, #94B4C1, #360185); color: #fff;}
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 236, 210, 0.3);}
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .success-animation { text-align: center; padding: 40px 20px;}
+        .success-icon { width: 80px; height: 80px; margin: 0 auto 30px;background: linear-gradient(135deg, #a8edea, #fed6e3); border-radius: 50%; display: flex; align-items: center;
+            justify-content: center;  font-size: 2rem; color: #333; animation: successPulse 2s ease-out;}
+	@keyframes successPulse { 0% { transform: scale(0); opacity: 0;}   50% { transform: scale(1.2);}            100% { transform: scale(1); opacity: 1;}}
+        .success-message h2 { color: #ffffff; font-size: 1.8rem; margin-bottom: 15px; background: linear-gradient(135deg, #ffecd2, #fcb69f); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;}
+        .success-message p { color: rgba(255, 255, 255, 0.8);  font-size: 1.1rem; line-height: 1.6;}
+
+        @media (max-width: 640px) {
+	body { padding: 5px 10px 10px 10px;}
+            .containerA { padding: 5px 10px; margin: 10px;}
+            .containerB { padding: 30px 20px; margin: 10px;}
+            .header h1 { font-size: 1.8rem;}
+            .buttons { flex-direction: column;}
+            .btn { width: 100%;}
+	.form-group input[type="date"], .form-group input[type="time"], #Section { padding: 10px 5px;}
+        }
+
+	.g3L { grid-template-columns: 1fr 1fr 1fr; gap: 5px;}
+	.gID { grid-template: ' aa aa aa bb cc cc cc cc cc cc '; gap: 5px;}
+	@media (max-width: 640px) {
+			.gID { grid-template: ' aa bb '  ' cc cc '; row-gap: 25px;}
+	}
+    </style>
+    <script>
+	const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
+	const gid = 0; // GID is the number in the URL after #gid=
+	const url = `docs.google.com{sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
+
+	fetch(url)
+	  .then(res => res.text())
+	  .then(text => {
+		    // The response needs slicing because it's wrapped in a function call
+		const jsonText = text.substring(47).slice(0, -2);
+		const data = JSON.parse(jsonText);
+		console.log(data);
+		// Process your data here
+	})
+	  .catch(err => console.error(err));
+   </script>
+
+  </head>
+    
+  <body>
+  <div class="container containerA">
+        <div class="header">
+            <h1>Trainer Daily Activity Report</h1>
+            <p>Pelaporan Aktivitas Harian Trainer</p>
+        </div>
+  </div>
+
+  <div class="container containerB">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="step-indicators">
+                <div class="step-indicator active" data-step="1">1</div>
+                <div class="step-indicator" data-step="2">2</div>
+                <div class="step-indicator" data-step="3">3</div>
+                <div class="step-indicator" data-step="4">4</div>
+            </div>
+        </div>
+
+        <div class="step-content">
+            <!-- Step 1: Personal Information -->
+            <div class="step active" id="step1">
+                <div class="form-group g3L">
+		<div>  <label for="Date">Date</label> <input type="date" id="date" name="date" required> </div>
+		<div>  <label for="Start">Start</label> <input type="time" id="Start" name="Start" required> </div>
+		<div>  <label for="Finish">Finish</label> <input type="time" id="Finish" name="Finish" required> </div>
+                </div>
+                <div class="form-group gID">
+		<div style="grid-area: aa;">
+			<label for="Section">Section</label>
+			<select id="Section" name="Section" onchange="selectColor(this);" required>
+				<option value="">Select Your Section</option>
+				<option value="Expertise AM">Expertise AM</option>
+				<option value="Expertise Operations">Expertise Operations</option>
+				<option value="Expertise OSHE">Expertise OSHE</option>
+				<option value="Expertise TSE">Expertise TSE</option>
+				<option value="Vocational Operator">Vocational Operator</option>
+				<option value="Vocational Technician">Vocational Technician</option>
+			</select>
+		</div>
+		<div style="grid-area: bb;">
+			<label for="SN">SN Auto</label>
+			<input type="number" id="SN" name="SN" required>
+		</div>
+		<div style="grid-area: cc;">
+			<label for="Name">Trainer Name</label>
+			<select id="Nama" name="Name" onchange="selectColor(this);" required>
+				<option value="">Select Your Section</option>
+			</select>
+		</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Professional Details -->
+            <div class="step" id="step2">
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" placeholder="Enter your company name" required>
+                </div>
+                <div class="form-group">
+                    <label for="jobTitle">Job Title</label>
+                    <input type="text" id="jobTitle" name="jobTitle" placeholder="Enter your job title" required>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Years of Experience</label>
+                    <select id="experience" name="experience" onchange="selectColor(this);" required>
+                        <option value="">Select your experience level</option>
+                        <option value="0-1">0-1 years</option>
+                        <option value="2-5">2-5 years</option>
+                        <option value="6-10">6-10 years</option>
+                        <option value="10+">10+ years</option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Preferences -->
+            <div class="step" id="step3">
+                <div class="form-group">
+                    <label for="interests">Primary Interest</label>
+                    <select id="interests" name="interests" required>
+                        <option value="">What interests you most?</option>
+                        <option value="leadership">Leadership Skills</option>
+                        <option value="technology">Technology Trends</option>
+                        <option value="marketing">Digital Marketing</option>
+                        <option value="productivity">Productivity Hacks</option>
+                        <option value="innovation">Innovation Strategies</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goals">Your Goals</label>
+                    <textarea id="goals" name="goals" rows="4" placeholder="Tell us about your learning goals and what you hope to achieve..."></textarea>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Confirmation -->
+            <div class="step" id="step4">
+                <div class="form-group">
+                    <label for="timezone">Preferred Time Zone</label>
+                    <select id="timezone" name="timezone" required>
+                        <option value="">Select your timezone</option>
+                        <option value="EST">Eastern Standard Time (EST)</option>
+                        <option value="CST">Central Standard Time (CST)</option>
+                        <option value="MST">Mountain Standard Time (MST)</option>
+                        <option value="PST">Pacific Standard Time (PST)</option>
+                        <option value="GMT">Greenwich Mean Time (GMT)</option>
+                        <option value="CET">Central European Time (CET)</option>
+                    </select>
+                </div>
+                
+                <div class="checkbox-group">
+                    <div class="custom-checkbox" onclick="toggleCheckbox(this)"></div>
+                    <label onclick="toggleCheckbox(this.previousElementSibling)">
+                        I agree to receive email notifications about the webinar and related content. You can unsubscribe at any time.
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <div class="custom-checkbox" onclick="toggleCheckbox(this)"></div>
+                    <label onclick="toggleCheckbox(this.previousElementSibling)">
+                        I accept the Terms of Service and Privacy Policy.
+                    </label>
+                </div>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Register Now</button>
+                </div>
+            </div>
+
+            <!-- Success Step -->
+            <div class="step" id="success" style="display: none;">
+                <div class="success-animation">
+                    <div class="success-icon">🎉</div>
+                    <div class="success-message">
+                        <h2>Registration Complete!</h2>
+                        <p>Thank you for registering! You'll receive a confirmation email shortly with all the webinar details and your access link.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+	function selectColor(e) {
+		if (e.value =="") {e.style.color = "rgba(100, 100, 100, 0.5)";} else {e.style.color = "#000";}
+	}
+let currentStep = 1;
+        const totalSteps = 4;
+        const formData = {};
+
+        function updateProgress() {
+            const progressFill = document.querySelector('.progress-fill');
+            const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressFill.style.width = progressPercent + '%';
+
+            // Update step indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                const stepNum = index + 1;
+                indicator.classList.remove('active', 'completed');
+                
+                if (stepNum === currentStep) {
+                    indicator.classList.add('active');
+                } else if (stepNum < currentStep) {
+                    indicator.classList.add('completed');
+                }
+            });
+        }
+
+        function showStep(stepNumber) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show current step
+            const currentStepElement = document.getElementById(`step${stepNumber}`);
+            if (currentStepElement) {
+                currentStepElement.classList.add('active');
+            }
+
+            updateProgress();
+        }
+
+        function validateStep(stepNumber) {
+            const step = document.getElementById(`step${stepNumber}`);
+            const requiredFields = step.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'rgba(255, 99, 71, 0.6)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+
+            // Special validation for step 4 checkboxes
+            if (stepNumber === 4) {
+                const checkboxes = step.querySelectorAll('.custom-checkbox');
+                let allChecked = true;
+                checkboxes.forEach(checkbox => {
+                    if (!checkbox.classList.contains('checked')) {
+                        allChecked = false;
+                    }
+                });
+                if (!allChecked) {
+                    isValid = false;
+                    // You could add visual feedback for unchecked boxes here
+                }
+            }
+
+            return isValid;
+        }
+
+        function collectStepData(stepNumber) {
+            const step = document.getElementById(`step${stepNumber}`);
+            const inputs = step.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    formData[input.name] = input.checked;
+                } else {
+                    formData[input.name] = input.value;
+                }
+            });
+        }
+
+        function nextStep() {
+            if (validateStep(currentStep)) {
+                collectStepData(currentStep);
+                
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function toggleCheckbox(checkbox) {
+            checkbox.classList.toggle('checked');
+        }
+
+        function submitForm() {
+            if (validateStep(currentStep)) {
+                collectStepData(currentStep);
+                
+                // Simulate form submission
+                console.log('Form Data:', formData);
+                
+                // Show success step
+                document.querySelectorAll('.step').forEach(step => {
+                    step.style.display = 'none';
+                });
+                document.getElementById('success').style.display = 'block';
+                
+                // Hide progress bar
+                document.querySelector('.progress-container').style.display = 'none';
+                
+                // You would typically send the data to your server here
+                // Example: fetch('/api/register', { method: 'POST', body: JSON.stringify(formData) })
+            }
+        }
+
+        // Add smooth focus effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+        });
+
+        // Initialize the form
+        updateProgress();
+   </script>
+
+  </body>
+  
+</html>
