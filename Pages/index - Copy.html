@@ -100,7 +100,8 @@
 		//const jsonText = text.substring(47).slice(0, -2);
 		const rows = text.trim().split('\n');
         const data = rows.map(row => row.split(','));
-		console.log(data);
+		const mpData = JSON.stringify(data);
+		console.log(mpData);
 		alert(data);
 		// Process your data here
 	})
