@@ -112,7 +112,7 @@
     	}
 		const mpData = JSON.stringify(result);
 		console.log(mpData);
-		alert(JSON.parse(mpData));
+		alert(JSON.loads(mpData));
 		// Process your data here
 	})
 	  .catch(err => console.error(err));
