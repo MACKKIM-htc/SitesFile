@@ -111,8 +111,9 @@
         	result.push(obj);
     	}
 		const mpData = JSON.stringify(result);
+		const firstItem = result[0];
 		console.log(mpData);
-		alert(JSON.loads(mpData));
+		alert(firstItem.Department);
 		// Process your data here
 	})
 	  .catch(err => console.error(err));
