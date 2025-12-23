@@ -97,10 +97,10 @@
 	  .then(res => res.text())
 	  .then(text => {
 		    // The response needs slicing because it's wrapped in a function call
-		//const jsonText = text.substring(47).slice(0, -2);
+		//const jsonText = data.substring(47).slice(0, -2);
 		const rows = text.trim().split('\n');
         const data = rows.map(row => row.split(','));
-		const mpData = JSON.stringify(data);
+		const mpData = JSON.parse(data);
 		console.log(mpData);
 		alert(data);
 		// Process your data here
