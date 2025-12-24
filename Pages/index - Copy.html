@@ -98,7 +98,7 @@
   				const data = await response.text();
 				return data;
 			})();
-			mpData = String(textData).trim();
+			return String(textData).trim();
 		})();
 		
 		function CSVToArray(strData, strDelimiter) {
