@@ -97,7 +97,7 @@
 			return await response.text();
 		}
 		const mpData = await fetchData();
-		window.sharedVariable = mpData;
+		window.sharedVariable = String(mpData).trim();
 	</script>
 	<script>
 		let mpData = window.sharedVariable;
