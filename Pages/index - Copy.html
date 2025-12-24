@@ -92,7 +92,7 @@
 	const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
 	const gid = 1868043357; // GID is the number in the URL after #gid=
 	const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
-	let txtD
+	let txtD ="";
 
 	fetch(url)
 	  .then(res => res.text())
