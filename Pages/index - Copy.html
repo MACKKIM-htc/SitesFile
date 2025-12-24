@@ -88,19 +88,17 @@
 			.gID { grid-template: ' aa bb '  ' cc cc '; row-gap: 25px;}
 	}
     </style>
-    <script>
+    <script type='module'>
 		const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
 		const gid = 1868043357; // GID is the number in the URL after #gid=
 		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
-		let mpData = (async () => {
-			let textData = (async () => {
-  				const response = await fetch(url);
-  				const data = await response.text();
-				return data;
-			})();
-			return String(textData).trim();
-		})();
-		
+		async function fetchData() {
+			const response = await fetch(url);
+			return await response.json();
+		}
+		const mpData = await fetchData();	
+	</script>
+	<script>	
 		function CSVToArray(strData, strDelimiter) {
     		strDelimiter = (strDelimiter || ",");
     		var objPattern = new RegExp((
