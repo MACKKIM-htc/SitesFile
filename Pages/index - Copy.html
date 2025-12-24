@@ -99,7 +99,8 @@
 		const mpData = await fetchData();
 		window.sharedVariable = mpData;
 	</script>
-	<script>	
+	<script>
+		let mpData = window.sharedVariable;
 		function CSVToArray(strData, strDelimiter) {
     		strDelimiter = (strDelimiter || ",");
     		var objPattern = new RegExp((
