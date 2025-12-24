@@ -92,54 +92,57 @@
 		const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
 		const gid = 1868043357; // GID is the number in the URL after #gid=
 		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
-		let textData = (async () => {
-  			const response = await fetch(url);
-  			const data = await response.text();
-			return data;
+		let mpData = ""
+		(async () => {
+			let textData = (async () => {
+  				const response = await fetch(url);
+  				const data = await response.text();
+				return data;
+			})();
+			mpData = String(textData).trim();
 		})();
-		let mpData = String(textData).trim();
-	function CSVToArray(strData, strDelimiter) {
-    	strDelimiter = (strDelimiter || ",");
-    	var objPattern = new RegExp((
-    		"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-    		"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-    		"([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
-		var arrData = [[]];
-    	var arrMatches = null;
-
-    	while (arrMatches = objPattern.exec(strData)) {
-        	var strMatchedDelimiter = arrMatches[1];
-        	if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-            	arrData.push([]);
-        	}
-        	if (arrMatches[2]) {
-            	var strMatchedValue = arrMatches[2].replace(
-            	new RegExp("\"\"", "g"), "\"");
-        	} else {
-            	var strMatchedValue = arrMatches[3];
-        	}
-        	arrData[arrData.length - 1].push(strMatchedValue);
-    	}
-    	return (arrData);
-	}
-	function CSV2JSON(csv) {
-    	var array = CSVToArray(csv);
-    	var objArray = [];
-    	for (var i = 1; i < array.length; i++) {
-        	objArray[i - 1] = {};
-        	for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-            	var key = array[0][k];
-            	objArray[i - 1][key] = array[i][k]
-        	}
-    	}
-	    var json = JSON.stringify(objArray);
-	    var str = json.replace(/},/g, "},\r\n");
-	    return str;
-	}
-	var json = CSV2JSON(mpData);
-	console.log(mpData);
-	console.log(json);
-	console.log(json[0]);
+		
+		function CSVToArray(strData, strDelimiter) {
+    		strDelimiter = (strDelimiter || ",");
+    		var objPattern = new RegExp((
+    			"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+    			"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+    			"([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
+			var arrData = [[]];
+    		var arrMatches = null;
+    		while (arrMatches = objPattern.exec(strData)) {
+        		var strMatchedDelimiter = arrMatches[1];
+        		if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
+            		arrData.push([]);
+        		}
+        		if (arrMatches[2]) {
+            		var strMatchedValue = arrMatches[2].replace(
+            		new RegExp("\"\"", "g"), "\"");
+        		} else {
+            		var strMatchedValue = arrMatches[3];
+        		}
+        		arrData[arrData.length - 1].push(strMatchedValue);
+    		}
+    		return (arrData);
+		}
+		function CSV2JSON(csv) {
+    		var array = CSVToArray(csv);
+    		var objArray = [];
+    		for (var i = 1; i < array.length; i++) {
+        		objArray[i - 1] = {};
+        		for (var k = 0; k < array[0].length && k < array[i].length; k++) {
+            		var key = array[0][k];
+            		objArray[i - 1][key] = array[i][k]
+        		}
+    		}
+		   	 var json = JSON.stringify(objArray);
+			 var str = json.replace(/},/g, "},\r\n");
+		    return str;
+		}
+		var json = CSV2JSON(mpData);
+		console.log(mpData);
+		console.log(json);
+		console.log(json[0]);
 	</script>
 
   </head>
