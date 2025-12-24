@@ -93,8 +93,8 @@
 		const gid = 1868043357; // GID is the number in the URL after #gid=
 		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
 		async function getText() {
-  			const response = await fetch(url);
-  			const textData = await response.text(); // The text is now in this variable
+  			const response = fetch(url);
+  			const textData = response.text(); // The text is now in this variable
   
   			console.log(textData); 
   		return textData;
