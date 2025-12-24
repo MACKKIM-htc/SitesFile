@@ -94,7 +94,7 @@
 		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
 		async function fetchData() {
 			const response = await fetch(url);
-			return await response.json();
+			return await response.text();
 		}
 		const mpData = await fetchData();
 		window.sharedVariable = mpData;
