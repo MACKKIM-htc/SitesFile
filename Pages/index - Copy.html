@@ -97,6 +97,7 @@
   			const data = await response.text();
 			return data;
 		})();
+		let mpData = String(textData).trim();
 	function CSVToArray(strData, strDelimiter) {
     	strDelimiter = (strDelimiter || ",");
     	var objPattern = new RegExp((
@@ -135,7 +136,7 @@
 	    var str = json.replace(/},/g, "},\r\n");
 	    return str;
 	}
-	var json = CSV2JSON(textData);
+	var json = CSV2JSON(mpData);
 	console.log(json);
 	</script>
 
