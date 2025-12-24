@@ -96,7 +96,8 @@
 			const response = await fetch(url);
 			return await response.json();
 		}
-		const mpData = await fetchData();	
+		const mpData = await fetchData();
+		window.sharedVariable = mpData;
 	</script>
 	<script>	
 		function CSVToArray(strData, strDelimiter) {
