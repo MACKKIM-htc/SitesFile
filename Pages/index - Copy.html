@@ -89,12 +89,18 @@
 	}
     </style>
     <script>
-	const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
-	const gid = 1868043357; // GID is the number in the URL after #gid=
-	const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
-	const response = await fetch(url);
-	const textData = await response.text();
-	console.log(textData);
+		const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
+		const gid = 1868043357; // GID is the number in the URL after #gid=
+		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
+		async function getText() {
+  			const response = await fetch(url);
+  			const textData = await response.text(); // The text is now in this variable
+  
+  			console.log(textData); 
+  		return textData;
+		}	
+
+		const myText = await getText();
 	</script>
 
   </head>
