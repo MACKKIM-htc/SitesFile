@@ -88,61 +88,69 @@
 			.gID { grid-template: ' aa bb '  ' cc cc '; row-gap: 25px;}
 	}
     </style>
-    <script type='module'>
-		const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
-		const gid = 1868043357; // GID is the number in the URL after #gid=
-		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
-		async function fetchData() {
-			const response = await fetch(url);
-			return await response.text();
-		}
-		const mpData = await fetchData();
-		window.sharedVariable = String(mpData).trim();
-	</script>
-	<script>
-		let mpData = window.sharedVariable;
-		function CSVToArray(strData, strDelimiter) {
-    		strDelimiter = (strDelimiter || ",");
-    		var objPattern = new RegExp((
-    			"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-    			"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-    			"([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
-			var arrData = [[]];
-    		var arrMatches = null;
-    		while (arrMatches = objPattern.exec(strData)) {
-        		var strMatchedDelimiter = arrMatches[1];
-        		if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-            		arrData.push([]);
-        		}
-        		if (arrMatches[2]) {
-            		var strMatchedValue = arrMatches[2].replace(
-            		new RegExp("\"\"", "g"), "\"");
-        		} else {
-            		var strMatchedValue = arrMatches[3];
-        		}
-        		arrData[arrData.length - 1].push(strMatchedValue);
-    		}
-    		return (arrData);
-		}
-		function CSV2JSON(csv) {
-    		var array = CSVToArray(csv);
-    		var objArray = [];
-    		for (var i = 1; i < array.length; i++) {
-        		objArray[i - 1] = {};
-        		for (var k = 0; k < array[0].length && k < array[i].length; k++) {
-            		var key = array[0][k];
-            		objArray[i - 1][key] = array[i][k]
-        		}
-    		}
-		   	 var json = JSON.stringify(objArray);
-			 var str = json.replace(/},/g, "},\r\n");
-		    return str;
-		}
-		var json = CSV2JSON(mpData);
-		console.log(mpData);
-		console.log(json);
-		console.log(json[0]);
-	</script>
+<script type='module'>
+    const sheetId = '15vo36A_qNKq49KTqTtnWFd39trxx9AwxbVYaz0OsG_4';
+    const gid = 1868043357;
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&tq&gid=${gid}`;
+
+    async function fetchData() {
+        const response = await fetch(url);
+        const text = await response.text();
+        return text.trim();
+    }
+
+    // Reuse your conversion logic
+    function CSVToArray(strData) {
+        const objPattern = new RegExp("(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\"\\,\\r\\n]*))", "gi");
+        let arrData = [[]];
+        let arrMatches = null;
+        while (arrMatches = objPattern.exec(strData)) {
+            if (arrMatches[1].length && (arrMatches[1] !== ",")) arrData.push([]);
+            arrData[arrData.length - 1].push(arrMatches[2] ? arrMatches[2].replace(/""/g, '"') : arrMatches[3]);
+        }
+        return arrData;
+    }
+
+    function generateTable(dataArray) {
+        if (!dataArray || dataArray.length === 0) return "<p>No data found.</p>";
+
+        let html = '<table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">';
+        
+        // 1. Create Headers
+        html += '<tr style="background-color: #f2f2f2;">';
+        Object.keys(dataArray[0]).forEach(key => {
+            html += `<th style="padding: 8px;">${key}</th>`;
+        });
+        html += '</tr>';
+
+        // 2. Create Rows
+        dataArray.forEach(row => {
+            html += '<tr>';
+            Object.values(row).forEach(value => {
+                html += `<td style="padding: 8px;">${value}</td>`;
+            });
+            html += '</tr>';
+        });
+
+        html += '</table>';
+        return html;
+    }
+
+    // MAIN EXECUTION
+    const csvData = await fetchData();
+    const rows = CSVToArray(csvData);
+    
+    // Map array to objects (JSON style)
+    const headers = rows[0];
+    const jsonArray = rows.slice(1).map(row => {
+        let obj = {};
+        headers.forEach((header, i) => obj[header] = row[i]);
+        return obj;
+    });
+
+    // Inject into the page
+    document.getElementById('table-container').innerHTML = generateTable(jsonArray);
+</script>
 
   </head>
     
@@ -170,6 +178,7 @@
         <div class="step-content">
             <!-- Step 1: Personal Information -->
             <div class="step active" id="step1">
+				<div id="table-container">Loading data...</div>
                 <div class="form-group g3L">
 		<div>  <label for="Date">Date</label> <input type="date" id="date" name="date" required> </div>
 		<div>  <label for="Start">Start</label> <input type="time" id="Start" name="Start" required> </div>
