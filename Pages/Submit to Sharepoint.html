@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Searchable multiselect dropdown Vanilla Javascript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  </head>
+    
+  <body>
+<form id="myForm">
+    <label for="username">Username:</label>
+    <input type="text" id="name" name="name">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+    <button type="submit">Submit as JSON</button>
+</form>
+<script>
+document.getElementById('myForm').addEventListener('submit', function (event) {
+    // 1. Prevent the default form submission (which sends x-www-form-urlencoded)
+    event.preventDefault();
+
+    // 2. Create a FormData object from the form elements
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // 3. Convert the form data into a plain JavaScript object
+    // Object.fromEntries is a modern method to convert an iterable of
+    // key-value pairs into an object.
+    const dataObject = Object.fromEntries(formData.entries());
+
+    // 4. Convert the JavaScript object to a JSON string
+    const jsonPayload = JSON.stringify(dataObject);
+
+    // 5. Send the data using the fetch API with the 'application/json' Content-Type
+    fetch(form.action || 'https://defaultb7cf3d786cbd4ac29956f68ab60960.bf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/c74e314906f64ac98e7986dde6daa37c/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=sdXdmw-PrTj-hqLD9EPOP4vKi7PKVV4z30jroJrVjsI', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: jsonPayload // The JSON string is the body of the request
+    })
+    .then(response => response.json()) // Assuming your server responds with JSON
+    .then(data => {
+        console.log('Success:', data);
+        alert('Form submitted successfully as JSON!');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred during submission.');
+    });
+});
+
+</script>
+  </body>
+  
+</html>
